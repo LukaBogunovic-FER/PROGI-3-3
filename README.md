@@ -19,16 +19,29 @@ Cilj je korisnicima pružiti uređivač fotografija koji je lako shvatljiv te im
 Aplikacija nudi nekoliko mogućnosti obrade rasterskih slika u više formata pomoću filtera, morfoloških i geometrijskih operacija te uvid u privatnu radnu okolinu svakog prijavljenog korisnika kao i njihove javne profile koji omogućuju favoritiziranje profila ili objava koji su im posebno zanimljivi.
 
 
-**Ključne funkcionalnosti**
+## Funkcijski zahtjevi
 
-- [Reprezentativna funkcionalnost koju korisnici mogu isprobati]
-- [Druga reprezentativna funkcionalnost]
-- [Po želji dodatna funkcionalnost; nemojte kopirati cijeli popis zahtjeva]
-
-Za potpuni opseg, zahtjeve, oblikovanje i dokaze ispitivanja pogledajte [docs](docs/Home.md).
-
+1. Uvoz i organizacija rasterskih slika
+- Korisnik može učitati i preuzeti rasterske slike u najmanje tri formata
+- Korisnik može stvarati direktorije, premještati slike te imenovati i preimenovati datoteke.
+2. Vizualizacija i obrada rasterskih slika
+- Korisnik može pregledavati odabranu sliku unutar svoje radne okoline.
+- Sustav omogućuje primjenu najmanje pet filtara, četiri morfološka operatora, tri geometrijske transformacije i jednog algoritma za segmentaciju slike.
+3. Autentifikacija i autorizacija korisnika
+- Korisnici se mogu registrirati i prijaviti putem vanjskih pružatelja identiteta koristeći OAuth 2.0 i OpenID Connect.
+- Svaki korisnik ima privatnu radnu okolinu kojoj može pristupiti samo vlasnik.
+4. Upravljanje javnim profilom i objavama
+- Korisnik može uređivati svoj javni profil koji sadrži korisničko ime, profilnu sliku i kratki opis.
+- Korisnik može stvarati, uređivati i brisati objave koje sadrže rastersku sliku i tekstualni opis.
+5. Dijeljenje slika i upravljanje privatnošću
+- Korisnik može objavljivati slike iz svoje radne okoline na javnom profilu.
+- Pojedinačne objave mogu se označiti kao javne ili privatne, pri čemu su privatne objave vidljive samo vlasniku.
+6. Pregledavanje sadržaja i sustav favorita
+- Prijavljeni korisnici mogu pregledavati javne profile i njihove javne objave te dodavati profile i objave u favorite.
+- Korisnik može preuzeti sliku s tuđeg javnog profila na svoje računalo ili je kopirati u vlastitu radnu okolinu.
+- Svaki novi korisnik nakon prve prijave dobiva tri početne rasterske slike za testiranje.
 <a id="deployment"></a>
-## Postavljanje (engl. deployment)
+## Postavljanje
 
 <!-- UPUTA: Ovaj odjeljak opisuje već postavljenu aplikaciju koju se  može otvoriti i isprobati bez lokalnog pokretanja izvornog koda.
 Za Iteraciju 1 i Završni pregled navedite konkretne podatke. Provjerite vodi li URL na javno dostupnu pokrenutu aplikaciju i radi li navedeni tijek uporabe. Nikada ne objavljujte lozinke ni pristupne tokene. -->
@@ -43,19 +56,6 @@ Za Iteraciju 1 i Završni pregled navedite konkretne podatke. Provjerite vodi li
 
 [Vodič za postavljanje i pokretanje](docs/6-Postavljanje-instalacija-i-konfiguracija.md) opisuje smještaj aplikacije (engl. hosting) koji tim stvarno koristi. Tim može koristiti Render ili drugu platformu koju ste dogovorili s asistentom/demonstratorom.
 
-<a id="quick-start"></a>
-## Brzi početak / instalacija
-
-<!-- Obavezno od Demo 1 nadalje. Zamijenite mjesta za unos naredbama koje je drugi član tima uspješno provjerio nakon čistog kloniranja repozitorija. Detaljne upute za administraciju držite u projektnoj dokumentaciji u direktoriju docs/. -->
-
-**Preduvjeti:** [Navedite potrebno izvršno okruženje (engl. runtime) i verzija, upravitelj paketa (engl. package manager), baza podataka ili vanjska usluga ako je nužna.]
-
-```bash
-git clone [repository URL]
-cd [repository directory]
-[install dependencies]
-[run the application]
-```
 
 **Adresa:** [Stvarna adresa koju aplikacija ispiše nakon pokretanja.]
 
@@ -128,7 +128,6 @@ Orginal [![cc0-1.0][cc0-1.0-shield]][cc0-1.0]
 [cc0-1.0-image]: https://licensebuttons.net/l/by/1.0/88x31.png
 [cc0-1.0-shield]: https://img.shields.io/badge/License-CC0--1.0-lightgrey.svg
 
-### Reference na licenciranje repozitorija
 <a id="ai-usage"></a>
 ## Uporaba umjetne inteligencije [![AI Usage: Disclosed](https://img.shields.io/badge/AI%20Usage-Disclosed-blue.svg)](https://www.fer.unizg.hr/_download/repository/Policy%20on%20the%20appropriate%20use%20of%20artificial%20intelligence%20at%20the%20faculty%20of%20electrical%20engineering%20and%20computing%5B1%5D.pdf)
 
@@ -141,7 +140,7 @@ Ovaj projekt slijedi FER-ova [pravila o primjerenoj uporabi umjetne inteligencij
 <a id="code-of-conduct-and-support"></a>
 ## Kodeks ponašanja i podrška [![Contributor Covenant](https://img.shields.io/badge/Contributor%20Covenant-2.1-4baaaa.svg)](CODE_OF_CONDUCT.md)
 
-Od članova tima očekuje se pridržavanje **Kodeksa ponašanja studenata** Fakulteta elektrotehnike i računarstva Sveučilišta u Zagrebu, pravila timskog rada na kolegiju i [Etičkog kodeksa IEEE-a](https://www.ieee.org/about/corporate/governance/p7-8.html). [Postavite poveznicu na `CODE_OF_CONDUCT.md` ako se ta datoteka koristi u vašem repozitoriju.]
+Od članova tima očekuje se pridržavanje **Kodeksa ponašanja studenata** Fakulteta elektrotehnike i računarstva Sveučilišta u Zagrebu, pravila timskog rada na kolegiju i [Etičkog kodeksa IEEE-a](https://www.ieee.org/about/corporate/governance/p7-8.html).
 
 ---
 
