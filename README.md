@@ -6,22 +6,18 @@ komentare s uputama i ogledne <details> blokove te prije predaje izbrišite ovu
 napomenu. Nemojte kopirati nastavni primjer kao rezultat svojeg projekta.
 -->
 
-# [Naziv aplikacije]
-
-<details>
-<summary>Zašto je ovaj odjeljak važan</summary>
-
-Započnite README nazivom svojeg projekta i sažetim opisom njegove svrhe. Naziv projekta ne mora sam po sebi objašnjavati čemu projekt služi, ali opis uz naziv treba novom čitatelju omogućiti da brzo razumije što aplikacija radi.
-
-</details>
-
-[U jednoj rečenici navedite što aplikacija omogućuje svojim korisnicima.]
+# Pictora
 
 **Projekt na kolegiju:** Ovu je aplikaciju razvio studentski tim u sklopu kolegija [Programsko inženjerstvo](https://www.fer.unizg.hr/predmet/proinz) na Fakultetu elektrotehnike i računarstva Sveučilišta u Zagrebu (FER).
 
+Pictora je platforma koja korisnicima omogućuje dijeljenje i uređivanje njihovih slika, kao i pregledavanje te praćenje drugih korisnika.
+
 ## Opis aplikacije
 
-[U dvije ili tri rečenice objasnite problem, ciljane korisnike i glavnu korist svoje aplikacije. Trenutačne funkcionalnosti navedite odvojeno od planiranih; opišite stvarni opseg umjesto obećanih mogućnosti.]
+Svatko od nas voli objaviti dobru fotku i podijeliti ju sa prijateljima kao i listati objave drugih.
+Cilj je korisnicima pružiti uređivač fotografija koji je lako shvatljiv te im omogućuje lako pronalaženje i uživanje u sadržaju koji im se sviđa.
+Aplikacija nudi nekoliko mogućnosti obrade rasterskih slika u više formata pomoću filtera, morfoloških i geometrijskih operacija te uvid u privatnu radnu okolinu svakog prijavljenog korisnika kao i njihove javne profile koji omogućuju favoritiziranje profila ili objava koji su im posebno zanimljivi.
+
 
 **Ključne funkcionalnosti**
 
