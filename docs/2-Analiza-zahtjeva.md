@@ -14,38 +14,17 @@ Primjeri koriste temu projekta CrisisMap. Neki namjerno sadrže korisne nedostat
 **Cilj:** Navesti što aplikacija mora omogućiti korisnicima, odakle pojedina mogućnost proizlazi i koji se opažljivi rezultat smatra prihvaćanjem.
 
 | ID | Opis | Prioritet | Izvor | Kriteriji prihvaćanja |
-| --- | --- | --- | --- | --- |
-| F-001 | [Funkcijski zahtjev/ponašanje sustava] | [Visok/Srednji/Nizak] | [Odobreni zadatak / zahtjev dionika / povratna informacija] | [Opažljivi rezultat] |
-|  |  |  |  |  |
-
-<details>
-<summary><strong>Izvori zahtjeva i kriteriji prihvaćanja</strong></summary>
-
-Svaki zahtjev treba imati stabilan ID. **Izvor označava odakle zahtjev potječe**, primjerice iz odobrenog projektnog zadatka, zahtjeva dionika ili povratne informacije koja je promijenila zahtjev. Opišite opažljivo ponašanje umjesto naziva zaslona ili programskog okvira. U cijeloj dokumentaciji koristite istu ljestvicu prioriteta. Složenu korisničku interakciju objasnite u odgovarajućem obrascu uporabe umjesto kopiranja cijelog tijeka u ovu tablicu.
-
-**Primjer — funkcijski zahtjevi za aplikaciju CrisisMap:**
-
-Kategorije izvora pokazuju različite načine na koje zahtjev može nastati.
-
-| ID | Opis | Prioritet | Izvor | Kriteriji prihvaćanja |
-| --- | --- | --- | --- | --- |
-| F-001 | Sustav omogućuje korisniku registraciju računa pomoću adrese e-pošte. | Visok | Zahtjev dionika | Korisnik se može registrirati adresom e-pošte, primiti poruku za potvrdu i aktivirati račun slijedeći poveznicu. |
-| F-002 | Sustav omogućuje oporavak lozinke putem e-pošte. | Srednji | Zahtjev dionika | Korisnik može zatražiti ponovno postavljanje lozinke, primiti poveznicu i uspješno postaviti novu lozinku. |
-| F-003 | Sustav prikazuje popis dostupnih resursa povezanih s kriznim događajima. | Visok | Postojeći sustav | Korisnik može pregledati ažurirani popis resursa relevantnih za vrstu kriznog događaja, lokaciju i raspoloživost. |
-| F-004 | Sustav omogućuje korisnicima podnošenje prijave kriznog događaja s lokacijom. | Visok | Dokument sa zahtjevima | Korisnik može podnijeti prijavu s vrstom kriznog događaja, razinom ozbiljnosti i lokacijom te dobiti potvrdu o zaprimanju. Ako odbije pristup geolokaciji preglednika, može lokaciju odabrati ručno.|
-| F-005 | Sustav šalje korisnicima obavijesti o relevantnim promjenama u njihovoj blizini. | Visok | Povratna informacija korisnika | Korisnici dobivaju obavijest unutar jedne minute od relevantne promjene za njihovu lokaciju. |
-| F-006 | Sustav prikazuje dostupne resurse prema lokaciji. | Visok | Analiza dokumentacije | Prikazuje se ažurirani popis resursa prilagođen vrsti kriznog događaja, lokaciji i raspoloživosti. |
-| F-007 | Sustav prikazuje prijave kriznih događaja s lokacijom kao oznake na karti. | Visok | Odobreni zadatak | Prijava s valjanom lokacijom prikazuje se kao oznaka na karti; odabirom oznake korisnik može otvoriti pripadajuću prijavu. |
-| F-008 | Sustav omogućuje moderatoru odobravanje ili odbijanje podnesenih prijava. | Visok | Zahtjev dionika | Moderator može odobriti ili odbiti prijavu koja čeka pregled; korisnik bez moderatorskih ovlasti ne može izvršiti te radnje. |
-
-**Kriteriji prihvaćanja i podrijetlo zahtjeva:** Primjer prikazuje registraciju, oporavak lozinke, resurse, prijavu kriznog događaja i obavijesti te nekoliko vrsta izvora i opažljivih kriterija. Istodobno otvara korisna pitanja: opisuju li F-003 i F-006 istu funkcionalnost resursa? Je li obećanje od jedne minute u F-005 dogovoreno i moguće ispitati? Treba li aplikaciji koja koristi isključivo OAuth uopće F-001 i F-002? Retke koristite kao materijal za analizu; u svojem projektu navedite vlastite zahtjeve. U stvarnom projektu stupac Izvor bilježi odakle su doista potekli njegovi zahtjevi.
-
-**Primjer prilagodbe kada odobreni zadatak koristi OAuth i kartu:** Umjesto kopiranja registracije e-poštom i oporavka lozinke formulirajte relevantni zahtjev za prijavu, primjerice: „F-001: Korisnici se prijavljuju putem odobrenog OAuth pružatelja identiteta; uspješna prijava omogućuje radnje rezervirane za prijavljene korisnike, a odustajanje od prijave ostavlja te radnje nedostupnima.” Zaseban zahtjev za kartu može glasiti: „F-007 : Prijave s lokacijom prikazuju se kao oznake na karti; odabirom oznake otvara se pripadajuća prijava.” Izvor treba biti stvarni odobreni zadatak ili dogovoreni zahtjev dionika. Ova je prilagodba zamjena za neodgovarajuće retke, a ne dodatna tablica koju svaki tim mora ispuniti.
-
-Za složenu interakciju kratak scenarij *Given / When / Then* može pojasniti kriterij. Primjerice: *Given* prijava bez lokacije, *when* građanin je podnese, *then* sustav objašnjava da lokacija nedostaje i ne pohranjuje prijavu. Nemojte jednostavan kriterij ponavljati i u prozi i u Gherkinu niti pisati Gherkin za svaki zahtjev.
-
-</details>
-
+|---|---|---|---|---|
+| F-001 | Učitavanje i preuzimanje rasterskih slika u najmanje tri formata | Visok | Odobreni zadatak | Slike se mogu učitati i preuzeti u podržanim formatima |
+| F-002 | Organizacija slika u direktorije te imenovanje, preimenovanje, premještanje i brisanje datoteka | Visok | Odobreni zadatak | Korisnik može izvršiti navedene operacije nad svojim datotekama |
+| F-003 | Pregledavanje i uređivanje rasterskih slika | Visok | Odobreni zadatak | Slika se prikazuje, a dostupni su najmanje pet filtara, četiri morfološka operatora, tri geometrijske transformacije i jedan algoritam segmentacije |
+| F-004 | Registracija i prijava putem vanjskog poslužitelja | Visok | Zahtjev dionika | Korisnik se može prijaviti, a pristup aplikaciji dodjeljuje se nakon uspješne autentifikacije |
+| F-005 | Privatna radna okolina svakog korisnika | Visok | Odobreni zadatak | Korisnik može pristupiti vlastitim datotekama, ali ne i privatnim datotekama drugih korisnika |
+| F-006 | Uređivanje javnog profila i upravljanje objavama | Visok | Zahtjev dionika | Korisnik može uređivati podatke profila te stvarati, mijenjati i brisati objave sa slikom i tekstom |
+| F-007 | Objavljivanje slika i postavljanje privatnosti objava | Visok | Zahtjev dionika | Korisnik može odabrati javnu ili privatnu vidljivost objave |
+| F-008 | Pregledavanje javnih profila i objava te označavanje favorita | Visok | Odobreni zadatak | Prijavljeni korisnik može pregledavati javni sadržaj i dodavati profile i objave u favorite |
+| F-009 | Preuzimanje javnih slika i njihovo kopiranje u vlastitu radnu okolinu | Srednji | Odobreni zadatak | Korisnik može preuzeti javnu sliku na računalo ili ju kopirati u vlastiti radni prostor |
+| F-010 | Dodjela početnih rasterskih slika novom korisniku | Srednji | Odobreni zadatak | Nakon prve prijave korisnik dobiva tri početne slike |
 
 ## 2.2 Nefunkcijski zahtjevi
 

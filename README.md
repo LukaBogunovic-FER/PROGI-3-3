@@ -19,27 +19,13 @@ Cilj je korisnicima pružiti uređivač fotografija koji je lako shvatljiv te im
 Aplikacija nudi nekoliko mogućnosti obrade rasterskih slika u više formata pomoću filtera, morfoloških i geometrijskih operacija te uvid u privatnu radnu okolinu svakog prijavljenog korisnika kao i njihove javne profile koji omogućuju favoritiziranje profila ili objava koji su im posebno zanimljivi.
 
 
-## Funkcijski zahtjevi
+**Ključne funkcionalnosti**
 
-1. Uvoz i organizacija rasterskih slika
-- Korisnik može učitati i preuzeti rasterske slike u najmanje tri formata
-- Korisnik može stvarati direktorije, premještati slike te imenovati i preimenovati datoteke.
-2. Vizualizacija i obrada rasterskih slika
-- Korisnik može pregledavati odabranu sliku unutar svoje radne okoline.
-- Sustav omogućuje primjenu najmanje pet filtara, četiri morfološka operatora, tri geometrijske transformacije i jednog algoritma za segmentaciju slike.
-3. Autentifikacija i autorizacija korisnika
-- Korisnici se mogu registrirati i prijaviti putem vanjskih pružatelja identiteta koristeći OAuth 2.0 i OpenID Connect.
-- Svaki korisnik ima privatnu radnu okolinu kojoj može pristupiti samo vlasnik.
-4. Upravljanje javnim profilom i objavama
-- Korisnik može uređivati svoj javni profil koji sadrži korisničko ime, profilnu sliku i kratki opis.
-- Korisnik može stvarati, uređivati i brisati objave koje sadrže rastersku sliku i tekstualni opis.
-5. Dijeljenje slika i upravljanje privatnošću
-- Korisnik može objavljivati slike iz svoje radne okoline na javnom profilu.
-- Pojedinačne objave mogu se označiti kao javne ili privatne, pri čemu su privatne objave vidljive samo vlasniku.
-6. Pregledavanje sadržaja i sustav favorita
-- Prijavljeni korisnici mogu pregledavati javne profile i njihove javne objave te dodavati profile i objave u favorite.
-- Korisnik može preuzeti sliku s tuđeg javnog profila na svoje računalo ili je kopirati u vlastitu radnu okolinu.
-- Svaki novi korisnik nakon prve prijave dobiva tri početne rasterske slike za testiranje.
+1. Uvoz i uređivanje slika
+2. Objava vlastitih i pregled tuđih slika
+
+Za potpuni opseg, zahtjeve, oblikovanje i dokaze ispitivanja pogledajte [docs](docs/Home.md).
+
 <a id="deployment"></a>
 ## Postavljanje
 
@@ -133,9 +119,7 @@ Orginal [![cc0-1.0][cc0-1.0-shield]][cc0-1.0]
 
 Ovaj projekt slijedi FER-ova [pravila o primjerenoj uporabi umjetne inteligencije](https://www.fer.unizg.hr/_download/repository/Policy%20on%20the%20appropriate%20use%20of%20artificial%20intelligence%20at%20the%20faculty%20of%20electrical%20engineering%20and%20computing%5B1%5D.pdf).
 
-**Izjava:** [Navedite jesu li korišteni alati umjetne inteligencije. Ako jesu, navedite alate i njihove glavne namjene te objasnite kako je tim pregledao nastali kod ili tekst i kako može objasniti vlastiti doprinos. Ako nisu korišteni, to jasno navedite. U alate umjetne inteligencije nemojte unositi privatne podatke, pristupne podatke ni tuđe zaštićene materijale.]
-
-[Ako je za ovaj projekt potreban detaljniji zapis uporabe umjetne inteligencije, postavite poveznicu na njegovo jedinstveno mjerodavno mjesto u dokumentaciji.]
+[Izjava o korištenju umjetne inteligencije](docs/Home.md#izjava-o-uporabi-umjetne-inteligencije)
 
 <a id="code-of-conduct-and-support"></a>
 ## Kodeks ponašanja i podrška [![Contributor Covenant](https://img.shields.io/badge/Contributor%20Covenant-2.1-4baaaa.svg)](CODE_OF_CONDUCT.md)

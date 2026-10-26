@@ -1,56 +1,27 @@
 # 1. Opseg projekta
 
-**Cilj:** Objasniti odobreni projektni zadatak vlastitim riječima tima. Čitatelj treba razumjeti problem, ciljane korisnike, cilj projekta i njegove granice bez prethodnog čitanja detaljnih zahtjeva.
-
 ## 1.1 Problem i cilj projekta
-
-**Cilj:** Jasno razgraničiti problem koji se rješava od predloženog rješenja i stvarne koristi za korisnika.
 
 Korisnici koji žele organizirati, obrađivati i dijeliti rasterske slike često moraju koristiti više različitih alata za pohranu, uređivanje i objavljivanje slika. Takav pristup može otežati organizaciju datoteka, praćenje obrađenih verzija i dijeljenje sadržaja s drugim korisnicima.
 
 Pictora je platforma koja objedinjuje pohranu, organizaciju, pregledavanje, obradu i javno dijeljenje rasterskih slika na jednom mjestu. Korisnicima omogućuje upravljanje vlastitom zbirkom slika, primjenu različitih metoda obrade te objavljivanje slika i tekstualnih opisa na javnom profilu.
 
-<details>
-<summary><strong>Očekivane koristi i potkrepljujući dokazi</strong></summary>
-
-**Primjer — CrisisMap:** „Tijekom teških vremenskih prilika građaninu mogu trebati prijave kriznih događaja relevantne za njegovu lokaciju. CrisisMap ima za cilj prikazati lokacijski relevantne prijave kriznih događaja na karti kako bi ih građanin mogao pronaći na jednom mjestu.” Time su navedeni problem, ciljani korisnik, predložena mogućnost i očekivana korist. Ne tvrdi se da je izmjereno smanjenje vremena reagiranja niti da aplikacija ima integraciju sa službom za hitne intervencije. Tim i dalje mora opisati opseg odobren za vlastiti projekt.
-
-„Aplikacija smanjuje vrijeme odgovora na krizni događaj za 30 % na temelju simulacija.” Broj očekivanu korist čini konkretnijom, ali odmah zahtijeva provjeru: **gdje je simulacija i kako je postotak izračunan?** Ako takav dokaz ne postoji, očekivanu korist navedite bez brojčanog rezultata.
-
-</details>
-
+Za očekivati je da će takva aplikacija biti privlačna svakom tko si želi olakšati cjelokupni proces objave slika.
 ## 1.2 Ciljani korisnici i dionici
 
-**Cilj:** Utvrditi osobe, uloge i organizacije čije potrebe i interesi određuju projektni zadatak.
-
 | Skupina korisnika ili dionika | Potreba ili interes relevantan za ovaj projekt |
 | --- | --- |
-|  |  |
-
-<details>
-<summary><strong>Korisnici, dionici i neobavezna persona</strong></summary>
-
-**Primjer — CrisisMap:**
-
-| Skupina korisnika ili dionika | Potreba ili interes relevantan za ovaj projekt |
-| --- | --- |
-| Građanin | Pronaći informacije o obližnjim kriznim događajima i podnijeti prijavu kriznog događaja s lokacijom. |
-| Koordinator pomoći | Pregledati prijave relevantne za područje i dostupne resurse, ako je koordinacija unutar odobrenog opsega. |
-| Regulatorno tijelo / Agencija za zaštitu podataka (Dionik) | Zahtijeva osiguravanje anonimnosti prijavitelja i zaštitu osobnih podataka (npr. usklađenost s GDPR-om). Ovaj dionik ne koristi aplikaciju, ali definira ograničenja sustava. |
-
-Riječ je o dvjema različitim potrebama, a ne o dvjema izmišljenim biografijama. Akter komunicira s aplikacijom; demonstrator na kolegiju kojem je rezultat zanimljiv ne mora biti akter aplikacije. Koristite uloge i ovlasti iz svojeg odobrenog zadatka. Persona je neobavezna i korisna je kada pomaže riješiti konkretno projektno pitanje.
-
-**Neobavezni primjer persone:** Ana, koordinatorica pomoći, treba aktualne informacije o resursima kako bi mogla rasporediti pomoć. To može pomoći kada tim odlučuje koje informacije koordinator treba vidjeti prve. Personu opišite samo ako objašnjava projektnu odluku; popis izmišljenih biografija nije obavezni rezultat kolegija.
-
-</details>
+| Registrirani korisnik | Pohranjivati, organizirati i obrađivati vlastite slike te mogućnost pregleda tuđih profila i slika |
+| Razvojni tim | Razviti aplikaciju te ju nadograđivati prema mogućnostima i željama korisnika uz moderaciju sadržaja na platformi |
+| Regulatorno tijelo | Osigurati zaštitu korisnika i njihovih osobnih podataka potrebnih za prijavu, kao i sadržaja objavljenog na platformi |
 
 ## 1.3 Granice projekta
 
 **Cilj:** Jasno definirati granice sustava — što je obuhvaćeno odobrenim zadatkom, što je svjesno izostavljeno ili odgođeno te o kojim vanjskim uslugama sustav izravno ovisi.
 
-**Uključeno:** [Glavne mogućnosti.]  
+**Uključeno:** Prijenos, uređivanje i objava vlastitih slika kao i pregled tuđih 
 **Izvan opsega ili odgođeno:** [Navedite funkcionalnosti koje su namjerno izostavljene ili prebačene u buduće verzije, uz kratko inženjersko ili vremensko obrazloženje.] 
-**Vanjske ovisnosti:** [Navedite nužne vanjske usluge, API-je, baze podataka ili izvore informacija bez kojih sustav ne može funkcionirati (npr. Google Maps, platni pristupnici, vanjski pružatelj identiteta (OAuth)).]
+**Vanjske ovisnosti:** Pružatelj uređivačkih usluga (ImageJS), pružatelj web usluga (Render)
 
 <details>
 <summary><strong>Primjer početne granice projekta</strong></summary>
