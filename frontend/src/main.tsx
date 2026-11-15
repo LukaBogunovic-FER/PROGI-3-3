@@ -5,11 +5,18 @@ import { MantineProvider } from '@mantine/core'
 import '@mantine/core/styles.css'
 import { router } from './routes'
 
+async function enableMocking() {
+  if (import.meta.env.MODE !== 'mock') return
+  const { worker } = await import('./mocks/browser')
+  await worker.start()
+}
 
-createRoot(document.getElementById('root')!).render(
-  <StrictMode>
-    <MantineProvider>
-    <RouterProvider router={router} />
-    </MantineProvider>
-  </StrictMode>,
-)
+enableMocking().then(() => {
+  createRoot(document.getElementById('root')!).render(
+    <StrictMode>
+      <MantineProvider>
+        <RouterProvider router={router} />
+      </MantineProvider>
+    </StrictMode>,
+  )
+})
