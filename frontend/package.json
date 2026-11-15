@@ -7,9 +7,15 @@
     "dev": "vite",
     "build": "tsc -b && vite build",
     "lint": "eslint .",
+    "dev:mock": "vite --mode mock",
     "preview": "vite preview"
   },
   "dependencies": {
+    "@mantine/core": "^9.7.4",
+    "@mantine/dropzone": "^9.7.4",
+    "@mantine/hooks": "^9.7.4",
+    "@mantine/modals": "^9.7.4",
+    "@mantine/notifications": "^9.7.4",
     "@tanstack/react-query": "^5.104.5",
     "react": "^19.3.1",
     "react-dom": "^19.3.1",
@@ -31,5 +37,10 @@
     "typescript": "~6.0.3",
     "typescript-eslint": "^8.71.2",
     "vite": "^8.3.4"
+  },
+  "msw": {
+    "workerDirectory": [
+      "public"
+    ]
   }
 }
