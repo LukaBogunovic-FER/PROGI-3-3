@@ -3,23 +3,23 @@ package com.pictora.backend.repository;
 
 import com.pictora.backend.entity.Post;
 import com.pictora.backend.entity.PostVisibility;
-import com.pictora.backend.entity.UserAccount;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.*;
 
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
-import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
+
+// Key for future Post and Image Services
 public interface PostRepository extends JpaRepository<Post, UUID> {
 
-    // Owner-only operations (edit, delete, visibility change)
+    // Owner-only (edit, delete, visibility change)
     Optional<Post> findByIdAndUser_Id(UUID postId, UUID userId);
 
-    // A user's own page: all posts
+    // User's page: all posts
     List<Post> findAllByUser_IdOrderByCreatedAtDesc(UUID userId);
 
     // Someone else's page: public posts only

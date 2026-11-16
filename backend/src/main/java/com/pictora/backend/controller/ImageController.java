@@ -4,22 +4,21 @@ import com.pictora.backend.entity.Image;
 import com.pictora.backend.service.ImageService;
 import com.pictora.backend.service.ImageService.DownloadedImage;
 
-import jakarta.persistence.EntityNotFoundException;
-
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.URI;
-import java.nio.file.NoSuchFileException;
-import java.util.*;
+import java.util.Locale;
+import java.util.Map;
+import java.util.UUID;
 
 import org.springframework.core.io.InputStreamResource;
-import org.springframework.http.*;
+import org.springframework.http.ContentDisposition;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import static java.nio.charset.StandardCharsets.UTF_8;
-import static org.springframework.http.HttpStatus.INTERNAL_SERVER_ERROR;
-import static org.springframework.http.HttpStatus.NOT_FOUND;
 import static org.springframework.http.MediaType.MULTIPART_FORM_DATA_VALUE;
 import static org.springframework.http.MediaType.parseMediaType;
 
@@ -33,7 +32,7 @@ public class ImageController {
         this.imageService = imageService;
     }
 
-    // ---------- Endpoints ----------
+    // Endpoints
 
     @PostMapping(consumes = MULTIPART_FORM_DATA_VALUE)
     public ResponseEntity<ImageResponse> uploadImage(
@@ -62,7 +61,7 @@ public class ImageController {
             @RequestHeader("X-User-Id") UUID userId
     ) throws IOException {
         Image image = imageService.getImage(id, userId);
-        InputStream input = imageService.loadImage(id, userId);
+        InputStream input = imageService.openOriginal(image);
 
         return inlineResponse(input, contentTypeFor(image.getFormat()), image.getName());
     }
@@ -73,7 +72,7 @@ public class ImageController {
             @RequestHeader("X-User-Id") UUID userId
     ) throws IOException {
         Image image = imageService.getImage(id, userId);
-        InputStream input = imageService.loadThumbnail(id, userId);
+        InputStream input = imageService.openThumbnail(image);
 
         return inlineResponse(input, "image/jpeg", "thumbnail-" + image.getName() + ".jpg");
     }
@@ -86,7 +85,7 @@ public class ImageController {
     ) {
         validateChanges(changes);
 
-        // Fail fast if the image doesn't exist or isn't owned by the user.
+        // Fail if the image doesn't exist or isn't owned by the user.
         Image image = imageService.getImage(id, userId);
 
         if (changes.containsKey("name")) {
@@ -104,7 +103,7 @@ public class ImageController {
     public ResponseEntity<Void> deleteImage(
             @PathVariable UUID id,
             @RequestHeader("X-User-Id") UUID userId
-    ) throws IOException {
+    ) {
         imageService.deleteImage(id, userId);
         return ResponseEntity.noContent().build();
     }
@@ -127,36 +126,7 @@ public class ImageController {
                 .body(downloaded.content());
     }
 
-    // ---------- Error handling ----------
-
-    @ExceptionHandler(EntityNotFoundException.class)
-    public ResponseEntity<Map<String, String>> handleNotFound(Exception exception) {
-        return error(NOT_FOUND, exception.getMessage());
-    }
-
-    @ExceptionHandler(NoSuchFileException.class)
-    public ResponseEntity<Map<String, String>> handleMissingFile(Exception exception) {
-        return error(NOT_FOUND, "Image file not found.");
-    }
-
-    @ExceptionHandler(IllegalArgumentException.class)
-    public ResponseEntity<Map<String, String>> handleBadRequest(Exception exception) {
-        return ResponseEntity.badRequest().body(Map.of("error", exception.getMessage()));
-    }
-
-    @ExceptionHandler(IOException.class)
-    public ResponseEntity<Map<String, String>> handleStorageError(Exception exception) {
-        return error(INTERNAL_SERVER_ERROR, "File storage operation failed.");
-    }
-
-    private ResponseEntity<Map<String, String>> error(
-            org.springframework.http.HttpStatus status,
-            String message
-    ) {
-        return ResponseEntity.status(status).body(Map.of("error", message));
-    }
-
-    // ---------- PATCH helpers ----------
+    // Helper
 
     private void validateChanges(Map<String, Object> changes) {
         if (changes == null || changes.isEmpty()) {
@@ -192,8 +162,6 @@ public class ImageController {
             throw new IllegalArgumentException("Invalid folder ID.");
         }
     }
-
-    // ---------- Response helpers ----------
 
     private ResponseEntity<InputStreamResource> inlineResponse(
             InputStream input,
@@ -236,9 +204,9 @@ public class ImageController {
             UUID id,
             String name,
             String format,
-            int width,
-            int height,
-            long size,
+            Integer width,
+            Integer height,
+            Long size,
             String createdAt,
             String thumbnailUrl
     ) {

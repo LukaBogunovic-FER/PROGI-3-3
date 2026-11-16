@@ -1,4 +1,3 @@
-
 package com.pictora.backend.repository;
 
 import com.pictora.backend.entity.Image;
@@ -12,12 +11,9 @@ public interface ImageRepository extends JpaRepository<Image, UUID> {
 
     Optional<Image> findByIdAndUser_Id(UUID imageId, UUID userId);
 
-    List<Image> findAllByUser_IdAndFolder_Id(
-            UUID userId,
-            UUID folderId
-    );
+    List<Image> findAllByUser_IdAndFolder_IdOrderByNameAsc(UUID userId, UUID folderId);
 
-    List<Image> findAllByUser_IdAndFolderIsNullOrderByNameAsc(
-            UUID userId
-    );
+    List<Image> findAllByUser_IdAndFolderIsNullOrderByNameAsc(UUID userId);
+
+    boolean existsByFolder_Id(UUID folderId);
 }
