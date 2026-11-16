@@ -1,0 +1,35 @@
+@startuml
+left to right direction
+
+actor "Registrirani korisnik" as K
+actor "Pružatelj identiteta\n(OAuth 2.0)" as IdP
+
+rectangle "Pictora" {
+  usecase "UC-01\nPrijava putem OAuth 2.0" as UC1
+  usecase "UC-02\nPregled radne okoline" as UC2
+  usecase "UC-03\nUvoz slike" as UC3
+  usecase "UC-04\nPreuzimanje slike" as UC4
+  usecase "UC-05\nStvaranje mape" as UC5
+  usecase "UC-06\nPreimenovanje" as UC6
+  usecase "UC-07\nPremještanje" as UC7
+  usecase "UC-08\nBrisanje" as UC8
+  usecase "UC-09\nPrikaz slike" as UC9
+  usecase "UC-10\nObrada slike" as UC10
+  usecase "UC-11\nSpremanje obrađene slike" as UC11
+}
+
+K --> UC1
+K --> UC2
+K --> UC3
+K --> UC4
+K --> UC5
+K --> UC6
+K --> UC7
+K --> UC8
+K --> UC9
+K --> UC10
+
+UC11 .> UC10 : <<extend>>
+
+UC1 -- IdP
+@enduml

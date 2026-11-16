@@ -6,11 +6,11 @@
 
 **Cilj:** Prikazati granicu sustava, relevantne aktere i njihove glavne ciljeve u **preglednom UML dijagramu obrazaca uporabe**. Ako je za razumijevanje pojedinog dijela sustava potrebno prikazati više detalja, taj dio izdvojite u dodatni usmjereni dijagram. Dodatni dijagrami trebaju produbiti dio preglednog modela, a ne stvarati nepovezane ili duplicirane prikaze istog sustava.
 
-![Dijagram obrazaca uporabe sustava CrisisMap](./assets/diagrams/3-1-crisismap-system-UC.svg)
+![Dijagram obrazaca uporabe sustava Imagic](./assets/diagrams/3-1-imagic-workspace-UC.png)
 
-**Slika 3.1. Dijagram obrazaca uporabe sustava CrisisMap**
+**Slika 3.1. Dijagram obrazaca uporabe sustava Pictora**
 
-**PlantUML izvor:** [izvor](./puml/3-1-crisismap-system-UC.puml)
+**PlantUML izvor:** [izvor](./puml/3-1-imagic-workspace-UC.puml)
 
 **Provjera dijagrama:** Prikažite prepoznate uloge koje **komuniciraju s aplikacijom**, a ne dionike koji s njom nemaju interakciju. Svaki glavni korisnički cilj mora imati pridruženog aktera; uključeni obrazac uporabe može se dosegnuti preko drugog obrasca uporabe bez vlastite izravne veze s akterom. `<<include>>` i `<<extend>>` koristite samo kada odnos odgovara stvarnom ponašanju.
 
@@ -44,16 +44,16 @@ Vanjski sustav može biti sekundarni akter obrasca uporabe kada sudjeluje u ostv
 
 **Za svaki obrazac uporabe koristite jednu okomitu tablicu.** Navedite samo onoliko pojedinosti koliko interakcija zahtijeva; neprimjenjivu alternativu izostavite umjesto da je popunjavate samo radi forme.
 
-### UC-[ID]: [Naziv usmjeren na cilj]
+### UC-03: Uvoz slike u radnu okolinu
 
 | Element specifikacije | Opis |
 | :--- | :--- |
-| **Primarni akter** | [Uloga definirana u analizi zahtjeva] |
-| **Povezani zahtjevi** | [Identifikatori funkcijskih zahtjeva, npr. F-001, F-004] |
-| **Preduvjeti** | [Stanje sustava koje mora biti zadovoljeno prije početka izvođenja] |
-| **Glavni uspješni tok** | 1. Akter pokreće akciju.<br>2. Program obrađuje unos i vraća povratnu informaciju.<br>3. [Koračni prikaz interakcije do ostvarenja cilja] |
-| **Alternativni tokovi / Iznimke** | **[Korak]a — [Naziv iznimke]:** [Uvjet nastanka, reakcija programa i nastavak toka] |
-| **Posljedice (ishod)** | [Promjena stanja podataka ili potvrda nakon uspješnog završetka] |
+| **Primarni akter** | Registrirani korisnik |
+| **Povezani zahtjevi** | F-001, F-002, F-005 |
+| **Preduvjeti** | Korisnik je prijavljen i nalazi se u mapi svoje radne okoline. |
+| **Glavni uspješni tok** | 1. Korisnik odabere uvoz (gumb ili povlačenje datoteka u mapu).<br>2. Korisnik odabere jednu ili više rasterskih slika s računala.<br>3. Sustav provjeri format i veličinu svake datoteke.<br>4. Sustav pohrani slike u odabranu mapu i prikaže napredak.<br>5. Sustav prikaže nove slike u popisu mape. |
+| **Alternativni tokovi / Iznimke** | **3a — Nepodržani format:** sustav odbije tu datoteku, prikaže jasnu poruku (NF-03) i nastavi s ostalima.<br>**3b — Datoteka prevelika ili oštećena:** sustav je odbije uz poruku i nastavi s ostalima.<br>**4a — Greška pri pohrani:** sustav prikaže poruku, slika se ne dodaje, korisnik može pokušati ponovno. |
+| **Posljedice (ishod)** | Slike su pohranjene u odabranoj mapi u radnoj okolini korisnika i vidljive samo njemu. |
 
 <details>
 <summary><strong>Primjeri specifikacija: Registracija i prijava kriznog događaja</strong></summary>
