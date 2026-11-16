@@ -58,3 +58,38 @@ export function saltNoise(): Image {
   for (const [x, y] of [[3, 3], [10, 7], [15, 15], [6, 14]]) img.setPixel(x, y, [255])
   return img
 }
+
+// crna slika s jednim bijelim pikselom u sredini
+export function dot(): Image {
+  const img = solid(11, 11, [0])
+  img.setPixel(5, 5, [255])
+  return img
+}
+
+// crna slika s bijelim kvadratom 5x5 (od 8 do 12)
+export function whiteSquare(): Image {
+  const img = solid(21, 21, [0])
+  for (let y = 8; y <= 12; y++) {
+    for (let x = 8; x <= 12; x++) img.setPixel(x, y, [255])
+  }
+  return img
+}
+
+// bijeli kvadrat 7x7 s crnom rupom od jednog piksela u sredini
+export function squareWithHole(): Image {
+  const img = solid(15, 15, [0])
+  for (let y = 4; y <= 10; y++) {
+    for (let x = 4; x <= 10; x++) img.setPixel(x, y, [255])
+  }
+  img.setPixel(7, 7, [0])
+  return img
+}
+
+// svaki piksel ima drugu vrijednost, da se vidi kamo se pomaknuo
+export function numbered(width = 4, height = 3): Image {
+  const img = new Image(width, height, { colorModel: 'GREY' })
+  for (let y = 0; y < height; y++) {
+    for (let x = 0; x < width; x++) img.setPixel(x, y, [y * width + x])
+  }
+  return img
+}
