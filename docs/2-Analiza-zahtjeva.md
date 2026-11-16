@@ -7,6 +7,10 @@
 | F-001 | Učitavanje i preuzimanje rasterskih slika u najmanje tri formata | Visok | Odobreni zadatak | Slike se mogu učitati i preuzeti u podržanim formatima |
 | F-002 | Organizacija slika u direktorije te imenovanje, preimenovanje, premještanje i brisanje datoteka | Visok | Odobreni zadatak | Korisnik može izvršiti navedene operacije nad svojim datotekama |
 | F-003 | Pregledavanje i uređivanje rasterskih slika | Visok | Odobreni zadatak | Slika se prikazuje, a dostupni su najmanje pet filtara, četiri morfološka operatora, tri geometrijske transformacije i jedan algoritam segmentacije |
+| F-003.1 | Primjena filtara na sliku | Visok | Odobreni zadatak | Dostupno je najmanje pet filtara; kriteriji po filtru u [Obrada slike – zahtjevi](zahtjevi-obrada-slika.md#filtri-f-0031) |
+| F-003.2 | Primjena morfoloških operatora | Visok | Odobreni zadatak | Dostupna su najmanje četiri morfološka operatora; kriteriji u [Obrada slike – zahtjevi](zahtjevi-obrada-slika.md#morfološki-operatori-f-0032) |
+| F-003.3 | Primjena geometrijskih transformacija | Visok | Odobreni zadatak | Dostupne su najmanje tri geometrijske transformacije; kriteriji u [Obrada slike – zahtjevi](zahtjevi-obrada-slika.md#geometrijske-transformacije-f-0033) |
+| F-003.4 | Segmentacija slike | Visok | Odobreni zadatak | Dostupan je najmanje jedan algoritam segmentacije; kriteriji u [Obrada slike – zahtjevi](zahtjevi-obrada-slika.md#segmentacija-f-0034) |
 | F-004 | Registracija i prijava putem vanjskog poslužitelja | Visok | Zahtjev dionika | Korisnik se može prijaviti, a pristup aplikaciji dodjeljuje se nakon uspješne autentifikacije |
 | F-005 | Privatna radna okolina svakog korisnika | Visok | Odobreni zadatak | Korisnik može pristupiti vlastitim datotekama, ali ne i privatnim datotekama drugih korisnika |
 | F-006 | Uređivanje javnog profila i upravljanje objavama | Visok | Zahtjev dionika | Korisnik može uređivati podatke profila te stvarati, mijenjati i brisati objave sa slikom i tekstom |
@@ -94,6 +98,7 @@ Ograničenje je uvjet koji tim mora poštovati; pretpostavka je uvjet na koji se
 | ID zahtjeva | Obrazac uporabe / modul | Arhitekturna realizacija | Ispitivanje ili provjera |
 | --- | --- | --- | --- |
 | F-001 | [UC-001] | [Komponenta, modul ili drugo mjesto realizacije] | [ST-01, CT-01 ili druga provjera] |
+| F-003 | Uređivanje slike (obrazac uporabe još nije opisan) | Registar operacija `frontend/src/imaging/ops.ts`; poziva ga editor | Jedinični testovi `frontend/src/imaging/ops.test.ts`; kriteriji u [Obrada slike – zahtjevi](zahtjevi-obrada-slika.md) |
 |  |  |  |  |
 
 <details>

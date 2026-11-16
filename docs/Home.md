@@ -30,6 +30,8 @@ Ažurirani popis članova, njihovih GitHub profila i glavnih uloga ili doprinosa
 | [6. Postavljanje, instalacija i konfiguracija](6-Postavljanje-instalacija-i-konfiguracija.md) | Lokalna instalacija, konfiguracija, javno postavljanje i administracija |
 | [7. Zaključak i budući rad](7-Zakljucak-i-buduci-rad.md) | Zaključak i moguća daljnja poboljšanja |
 | [A. Pregled aktivnosti grupe](A-Pregled-aktivnosti-grupe.md) | Aktivnosti tima, doprinosi i izazovi |
+| [Obrada slike – zahtjevi i operacije](zahtjevi-obrada-slika.md) | Detaljni zahtjevi za filtre, morfologiju, geometrijske transformacije i segmentaciju; korištene ImageJS funkcije |
+| [Pojmovnik](pojmovnik.md) | Objašnjenja stručnih pojmova |
 
 ## Ključne točke projekta
 
