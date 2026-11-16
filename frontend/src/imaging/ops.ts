@@ -53,6 +53,20 @@ export const CATEGORY_LABELS: Record<Category, string> = {
 const num = (p: Params, key: string) => Number(p[key])
 const str = (p: Params, key: string) => String(p[key])
 
+// kvadratni strukturni element size x size, sve jedinice
+export function squareKernel(size: number): number[][] {
+  const kernel: number[][] = []
+  for (let i = 0; i < size; i++) kernel.push(new Array(size).fill(1))
+  return kernel
+}
+
+const morphParams: ParamDef[] = [
+  { key: 'size', label: 'Kernel size', type: 'number', min: 3, max: 15, step: 2, default: 3 },
+  { key: 'iterations', label: 'Iterations', type: 'number', min: 1, max: 10, step: 1, default: 1 },
+]
+
+const morphOptions = (p: Params) => ({ kernel: squareKernel(num(p, 'size')), iterations: num(p, 'iterations') })
+
 // image-js grey() radi samo za RGB/RGBA, pa sive slike treba posebno
 function toGrey(img: Image, algorithm?: 'luma709' | 'average' | 'lightness' | 'max'): Image {
   if (img.colorModel === 'GREY') return img
@@ -150,6 +164,123 @@ export const OPS: OpDef[] = [
     input: 'any',
     params: [],
     run: (img) => img.increaseContrast(),
+  },
+
+  // ---------- morfologija (radi nad sivom slikom) ----------
+  {
+    id: 'erode',
+    label: 'Erosion',
+    category: 'morphology',
+    input: 'grey',
+    params: morphParams,
+    run: (img, p) => img.erode(morphOptions(p)),
+  },
+  {
+    id: 'dilate',
+    label: 'Dilation',
+    category: 'morphology',
+    input: 'grey',
+    params: morphParams,
+    run: (img, p) => img.dilate(morphOptions(p)),
+  },
+  {
+    id: 'open',
+    label: 'Opening',
+    category: 'morphology',
+    input: 'grey',
+    params: morphParams,
+    run: (img, p) => img.open(morphOptions(p)),
+  },
+  {
+    id: 'close',
+    label: 'Closing',
+    category: 'morphology',
+    input: 'grey',
+    params: morphParams,
+    run: (img, p) => img.close(morphOptions(p)),
+  },
+
+  // ---------- geometrijske transformacije ----------
+  {
+    id: 'resize',
+    label: 'Resize',
+    category: 'geometric',
+    input: 'any',
+    params: [{ key: 'percent', label: 'Scale (%)', type: 'number', min: 5, max: 400, step: 5, default: 50 }],
+    run: (img, p) => {
+      const width = Math.max(1, Math.round((img.width * num(p, 'percent')) / 100))
+      return img.resize({ width, preserveAspectRatio: true })
+    },
+  },
+  {
+    id: 'rotate',
+    label: 'Rotate',
+    category: 'geometric',
+    input: 'any',
+    params: [
+      {
+        key: 'angle',
+        label: 'Angle',
+        type: 'select',
+        default: '90',
+        options: [
+          { value: '90', label: '90° right' },
+          { value: '180', label: '180°' },
+          { value: '270', label: '90° left' },
+        ],
+      },
+    ],
+    run: (img, p) => img.rotate(num(p, 'angle') as 90 | 180 | 270),
+  },
+  {
+    id: 'rotateFree',
+    label: 'Rotate (any angle)',
+    category: 'geometric',
+    input: 'any',
+    params: [{ key: 'angle', label: 'Angle (°)', type: 'number', min: -180, max: 180, step: 1, default: 15 }],
+    // fullImage: platno se poveca da se uglovi ne odrezu
+    run: (img, p) => img.transformRotate(num(p, 'angle'), { fullImage: true }),
+  },
+  {
+    id: 'flip',
+    label: 'Flip',
+    category: 'geometric',
+    input: 'any',
+    params: [
+      {
+        key: 'axis',
+        label: 'Axis',
+        type: 'select',
+        default: 'horizontal',
+        options: [
+          { value: 'horizontal', label: 'Horizontal' },
+          { value: 'vertical', label: 'Vertical' },
+          { value: 'both', label: 'Both' },
+        ],
+      },
+    ],
+    run: (img, p) => img.flip({ axis: str(p, 'axis') as 'horizontal' | 'vertical' | 'both' }),
+  },
+  {
+    id: 'crop',
+    label: 'Crop',
+    category: 'geometric',
+    input: 'any',
+    // sve u postocima slike, da radi za bilo koju velicinu
+    params: [
+      { key: 'left', label: 'Left (%)', type: 'number', min: 0, max: 95, step: 1, default: 10 },
+      { key: 'top', label: 'Top (%)', type: 'number', min: 0, max: 95, step: 1, default: 10 },
+      { key: 'width', label: 'Width (%)', type: 'number', min: 5, max: 100, step: 1, default: 80 },
+      { key: 'height', label: 'Height (%)', type: 'number', min: 5, max: 100, step: 1, default: 80 },
+    ],
+    run: (img, p) => {
+      const column = Math.floor((img.width * num(p, 'left')) / 100)
+      const row = Math.floor((img.height * num(p, 'top')) / 100)
+      // ne smije izaci izvan slike
+      const width = Math.max(1, Math.min(img.width - column, Math.round((img.width * num(p, 'width')) / 100)))
+      const height = Math.max(1, Math.min(img.height - row, Math.round((img.height * num(p, 'height')) / 100)))
+      return img.crop({ origin: { column, row }, width, height })
+    },
   },
 ]
 
