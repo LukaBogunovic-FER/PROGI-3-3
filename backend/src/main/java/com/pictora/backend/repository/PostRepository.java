@@ -6,17 +6,36 @@ import com.pictora.backend.entity.PostVisibility;
 import com.pictora.backend.entity.UserAccount;
 import org.springframework.data.jpa.repository.JpaRepository;
 
-import java.util.List;
-import java.util.UUID;
+import java.util.*;
+
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
 
 public interface PostRepository extends JpaRepository<Post, UUID> {
 
-    List<Post> findByUser(UserAccount user);
+    // Owner-only operations (edit, delete, visibility change)
+    Optional<Post> findByIdAndUser_Id(UUID postId, UUID userId);
 
-    List<Post> findByUserAndVisibility(
-            UserAccount user,
-            PostVisibility visibility
-    );
+    // A user's own page: all posts
+    List<Post> findAllByUser_IdOrderByCreatedAtDesc(UUID userId);
 
-    List<Post> findByVisibility(PostVisibility visibility);
+    // Someone else's page: public posts only
+    List<Post> findAllByUser_IdAndVisibilityOrderByCreatedAtDesc(UUID userId, PostVisibility visibility);
+
+    // Global feed
+    Page<Post> findByVisibility(PostVisibility visibility, Pageable pageable);
+
+    // One post, visible only if public or owned by the viewer
+    @Query("""
+            select p from Post p
+            where p.id = :postId
+              and (p.visibility = com.pictora.backend.entity.PostVisibility.PUBLIC
+                   or p.user.id = :viewerId)
+            """)
+    Optional<Post> findVisibleToViewer(@Param("postId") UUID postId, @Param("viewerId") UUID viewerId);
+
+    boolean existsByImage_Id(UUID imageId);
 }

@@ -1,4 +1,3 @@
-
 package com.pictora.backend.controller;
 
 import org.springframework.jdbc.core.JdbcTemplate;
@@ -16,7 +15,7 @@ public class DatabaseController {
 
     @GetMapping("/api/db-test")
     public String testDatabase() {
-        String result = jdbcTemplate.queryForObject("SELECT version()", String.class);
-        return "PostgreSQL connection successful: " + result;
+        String version = jdbcTemplate.queryForObject("SELECT version()", String.class);
+        return "PostgreSQL connection successful: " + version;
     }
 }

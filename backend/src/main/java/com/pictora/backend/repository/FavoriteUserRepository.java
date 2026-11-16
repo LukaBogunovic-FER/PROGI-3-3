@@ -2,29 +2,18 @@
 package com.pictora.backend.repository;
 
 import com.pictora.backend.entity.FavoriteUser;
-import com.pictora.backend.entity.UserAccount;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
-import java.util.Optional;
 import java.util.UUID;
 
 public interface FavoriteUserRepository extends JpaRepository<FavoriteUser, UUID> {
 
-    List<FavoriteUser> findByUser(UserAccount user);
+    List<FavoriteUser> findAllByUser_IdOrderByCreatedAtDesc(UUID userId);
 
-    Optional<FavoriteUser> findByUserAndFavoriteUser(
-            UserAccount user,
-            UserAccount favoriteUser
-    );
+    boolean existsByUser_IdAndFavoriteUser_Id(UUID userId, UUID favoriteUserId);
 
-    boolean existsByUserAndFavoriteUser(
-            UserAccount user,
-            UserAccount favoriteUser
-    );
-
-    void deleteByUserAndFavoriteUser(
-            UserAccount user,
-            UserAccount favoriteUser
-    );
+    @Transactional
+    void deleteByUser_IdAndFavoriteUser_Id(UUID userId, UUID favoriteUserId);
 }

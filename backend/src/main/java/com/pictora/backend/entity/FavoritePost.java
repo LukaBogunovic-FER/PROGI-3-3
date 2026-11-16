@@ -1,18 +1,14 @@
-
 package com.pictora.backend.entity;
 
 import jakarta.persistence.*;
+
 import java.time.LocalDateTime;
 import java.util.UUID;
 
 @Entity
 @Table(
         name = "favorite_posts",
-        uniqueConstraints = {
-                @UniqueConstraint(
-                        columnNames = {"user_id", "post_id"}
-                )
-        }
+        uniqueConstraints = @UniqueConstraint(columnNames = {"user_id", "post_id"})
 )
 public class FavoritePost {
 

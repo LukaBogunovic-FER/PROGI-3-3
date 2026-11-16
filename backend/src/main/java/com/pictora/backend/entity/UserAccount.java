@@ -1,7 +1,7 @@
-
 package com.pictora.backend.entity;
 
 import jakarta.persistence.*;
+
 import java.time.LocalDateTime;
 import java.util.UUID;
 
@@ -27,24 +27,23 @@ public class UserAccount {
     @Column(length = 500)
     private String description;
 
+    @Column(nullable = false)
+    private boolean sampleImagesInitialized = false;
+
     private LocalDateTime createdAt;
 
     private LocalDateTime updatedAt;
+
+    @PrePersist
+    protected void onCreate() {
+        createdAt = LocalDateTime.now();
+        updatedAt = createdAt;
+    }
 
     @PreUpdate
     protected void onUpdate() {
         updatedAt = LocalDateTime.now();
     }
-
-    @PrePersist
-    protected void onCreate() {
-        createdAt = LocalDateTime.now();
-        updatedAt = LocalDateTime.now();
-    }
-
-    @Column(nullable = false)
-    private boolean sampleImagesInitialized = false;
-
 
     public UUID getId() {
         return id;
@@ -90,12 +89,12 @@ public class UserAccount {
         this.description = description;
     }
 
-    public void setSampleImagesInitialized(boolean init){
-        sampleImagesInitialized = init;
+    public boolean isSampleImagesInitialized() {
+        return sampleImagesInitialized;
     }
 
-    public boolean getSampleImagesInitialized(){
-        return sampleImagesInitialized;
+    public void setSampleImagesInitialized(boolean sampleImagesInitialized) {
+        this.sampleImagesInitialized = sampleImagesInitialized;
     }
 
     public LocalDateTime getCreatedAt() {

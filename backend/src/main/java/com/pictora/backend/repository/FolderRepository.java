@@ -2,7 +2,6 @@
 package com.pictora.backend.repository;
 
 import com.pictora.backend.entity.Folder;
-import com.pictora.backend.entity.UserAccount;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.List;
@@ -11,9 +10,11 @@ import java.util.UUID;
 
 public interface FolderRepository extends JpaRepository<Folder, UUID> {
 
-    List<Folder> findByUserAndParent(UserAccount user, Folder parent);
+    Optional<Folder> findByIdAndUser_Id(UUID folderId, UUID userId);
 
-    Optional<Folder> findByIdAndUser(UUID id, UserAccount user);
+    List<Folder> findAllByUser_IdAndParentIsNullOrderByNameAsc(UUID userId);
 
-    List<Folder> findByParentId(UUID parentId);
+    List<Folder> findAllByUser_IdAndParent_IdOrderByNameAsc(UUID userId, UUID parentId);
+
+    boolean existsByParent_Id(UUID folderId);
 }
