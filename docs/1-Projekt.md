@@ -43,18 +43,7 @@ Ovaj pregled zadržite na razini opsega: navedite glavnu mogućnost i njezinu gr
 
 ## 1.4 Postojeći pristupi i opravdanost projekta
 
-**Cilj:** Objasniti kako korisnici trenutačno rješavaju problem i koja preostala potreba opravdava odobreni projekt.
-
-[U dvije do četiri rečenice opišite jedan postojeći postupak ili relevantno rješenje, što ono već omogućuje i koja konkretna potreba motivira ovaj projekt. Činjenične tvrdnje o vanjskim proizvodima ili praksama potkrijepite izvorom.]
-
-<details>
-<summary><strong>Postojeći pristupi i opravdanost projekta</strong></summary>
-
-**Primjer — CrisisMap:** „Nakon teškog vremenskog događaja građanin će možda morati provjeriti izvor meteoroloških upozorenja i zaseban izvor lokalnih prijava. Predloženi prikaz na karti u CrisisMapu objedinjuje prijave kriznih događaja relevantne za odabranu lokaciju. Aplikacija ne zamjenjuje službena upozorenja ni hitne službe.” Time se objašnjava potreba i namjeravana granica projekta bez tvrdnje da su svi postojeći kanali neučinkoviti. Prva je rečenica **primjer korisničkog scenarija**, a ne izmjeren nalaz o stvarnim korisnicima. Ako tim navodi konkretnu službu upozoravanja ili konkurentski proizvod, treba navesti izvor. Pregled konkurencije i snimke zaslona nisu obavezni.
-
-Ako je postojeće rješenje stvarno utjecalo na projekt, usporedite samo relevantnu funkcionalnost, primjerice jasnoću karte ili potrebnu integraciju. Izbjegavajte unaprijed zadani broj proizvoda ili tablicu kriterija koji nisu povezani s odobrenim zadatkom.
-
-</details>
+Korisnik koji želi obraditi rastersku sliku, urediti njezino skladištenje i objaviti je uz opis najčešće će za to koristiti neki poseban program za obradu slika, dok se pohrana i objava obično rješavaju zasebnim uslugama. Imagic ne zamjenjuje takve profesionalne uređivače, nego u jednom okruženju objedinjuje osnovnu obradu slika i mogućnost za njihovo dijeljenje.
 
 ---
 
