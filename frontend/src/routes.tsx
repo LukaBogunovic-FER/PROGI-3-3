@@ -22,6 +22,8 @@ export const router = createBrowserRouter([
       { path: 'favorites', element: <FavoritesPage /> },
       { path: 'profile', element: <ProfilePage /> },
       { path: 'settings', element: <SettingsPage /> },
+      { path: 'editor', element: <EditorPage /> },
+
       { path: 'editor/:imageId', element: <EditorPage /> },
     ],
   },

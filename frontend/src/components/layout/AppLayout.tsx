@@ -31,6 +31,7 @@ export default function AppLayout() {
 
       <AppShell.Navbar p="xs">
         <NavLink component={RouterNavLink} to="/workspace" label="Workspace" />
+        <NavLink component={RouterNavLink} to="/editor" label="Editor" />
         <NavLink component={RouterNavLink} to="/explore" label="Explore" />
         <NavLink component={RouterNavLink} to="/favorites" label="Favorites" />
         <NavLink component={RouterNavLink} to="/profile" label="My profile" />
