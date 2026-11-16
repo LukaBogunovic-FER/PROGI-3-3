@@ -71,13 +71,13 @@ Navedite nekoliko tehnologija i vanjskih usluga koje bitno određuju kako vaša 
 
 | Član | Glavna uloga ili doprinos |
 | --- | --- |
-| Luka Milošević | [Uloga ili doprinos] |
-| Petar Gabriel | [Uloga ili doprinos] |
+| Luka Milošević |  |
+| Petar Gabriel |  |
 | Tin Karalić | Backend |
-| Eugen Korak ||
-| Mislav Brkić ||
-| Luka Bogunović ||
-| Borna Dramalija ||
+| Eugen Korak | |
+| Mislav Brkić | |
+| Luka Bogunović | |
+| Borna Dramalija | |
 
 
 ## Doprinos projektu
