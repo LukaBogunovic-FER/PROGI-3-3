@@ -24,7 +24,7 @@ export default function AppLayout() {
     <AppShell header={{ height: 56 }} navbar={{ width: 220, breakpoint: 'sm' }} padding="md">
       <AppShell.Header p="md">
         <Group justify="space-between">
-          <Title order={3}>Imagic</Title>
+          <Title order={3}>Pictora</Title>
           <Text>{me?.name}</Text>
         </Group>
       </AppShell.Header>
