@@ -35,7 +35,7 @@
 | ID uloge ili aktera | Odnos prema sustavu | Relevantni zahtjevi |
 |---|---|---|
 | A-01 | Registrirani korisnik koji upravlja vlastitim slikama i radnim prostorom | F-001, F-002, F-003 |
-| A-02 | Registrirani korisnik koji uređuje profil i objavljuje slike | F-004, F-005 |
+| A-02 | Registrirani korisnik koji uređuje profil i objavljuje slike | F-004, F-005, F-006, F-007 |
 | A-03 | Registrirani korisnik koji pregledava i preuzima javni sadržaj te označava favorite | F-008, F-009 |
 | D-01 | Razvojni tim koji razvija i održava aplikaciju | NF-03, NF-05, NF-06 |
 
@@ -99,7 +99,10 @@ Ograničenje je uvjet koji tim mora poštovati; pretpostavka je uvjet na koji se
 | --- | --- | --- | --- |
 | F-001 | [UC-001] | [Komponenta, modul ili drugo mjesto realizacije] | [ST-01, CT-01 ili druga provjera] |
 | F-003 | Uređivanje slike (obrazac uporabe još nije opisan) | Registar operacija `frontend/src/imaging/ops.ts`; poziva ga editor | Jedinični testovi `frontend/src/imaging/ops.test.ts`; kriteriji u [Obrada slike – zahtjevi](zahtjevi-obrada-slika.md) |
-|  |  |  |  |
+| F-006 | UC-12 Uređivanje javnog profila, UC-13, UC-14 | `ProfilePage.tsx`, `SettingsPage.tsx`, `frontend/src/api/social.ts` | Ručno ispitivanje uređivanja profila, dodavanja i brisanja objava |
+| F-007 | UC-13 Objava slike, UC-14 Uređivanje vidljivosti | `ProfilePage.tsx` i filtriranje javnih objava u `ExplorePage.tsx` | Ručno ispitivanje prebacivanja javne/privatne vidljivosti objave |
+| F-008 | UC-15 Pregled javnih stranica, UC-16 Favoriti | `ExplorePage.tsx`, `FavoritesPage.tsx`, `frontend/src/api/social.ts` | Ručno ispitivanje pregleda javnih profila i spremanja u favorite |
+| F-009 | UC-17 Preuzimanje ili kopiranje javne slike | `ExplorePage.tsx`, `FavoritesPage.tsx` | Ručno ispitivanje preuzimanja i kopiranja slike u radnu okolinu |
 
 <details>
 <summary><strong>Sljedivost zahtjeva do obrazaca uporabe i ispitivanja</strong></summary>
