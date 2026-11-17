@@ -33,10 +33,10 @@ Zadatak traži najmanje 4 morfološka operatora. Strukturni element je kvadrat z
 
 | ID | Operacija | Parametri | Kriterij prihvaćanja | Status |
 |---|---|---|---|---|
-| MOR-01 | Erozija | veličina jezgre 3–15, neparna; broj ponavljanja 1–10 | Izolirani bijeli piksel nestaje uz jezgru 3×3 | Planirano |
-| MOR-02 | Dilatacija | isto kao MOR-01 | Bijeli kvadrat se poveća za polumjer jezgre sa svake strane | Planirano |
-| MOR-03 | Otvaranje | isto kao MOR-01 | Mali šum nestaje, a veći objekt ostaje iste veličine | Planirano |
-| MOR-04 | Zatvaranje | isto kao MOR-01 | Mala rupa unutar objekta se popuni | Planirano |
+| MOR-01 | Erozija | veličina jezgre 3–15, neparna; broj ponavljanja 1–10 | Izolirani bijeli piksel nestaje uz jezgru 3×3 | Implementirano |
+| MOR-02 | Dilatacija | isto kao MOR-01 | Bijeli kvadrat se poveća za polumjer jezgre sa svake strane | Implementirano |
+| MOR-03 | Otvaranje | isto kao MOR-01 | Mali šum nestaje, a veći objekt ostaje iste veličine | Implementirano |
+| MOR-04 | Zatvaranje | isto kao MOR-01 | Mala rupa unutar objekta se popuni | Implementirano |
 
 ## Geometrijske transformacije (F-003.3)
 
@@ -44,11 +44,11 @@ Zadatak traži najmanje 3 geometrijske transformacije.
 
 | ID | Operacija | Parametri | Kriterij prihvaćanja | Status |
 |---|---|---|---|---|
-| GEO-01 | Promjena veličine | mjerilo 5–400 % (zadano 50) | Uz 50 % širina i visina se prepolove; omjer stranica ostaje isti | Planirano |
-| GEO-02 | Rotacija za 90°/180°/270° | kut | Rotacija za 90° zamijeni širinu i visinu; dvije rotacije za 180° daju izvornu sliku | Planirano |
-| GEO-03 | Rotacija za proizvoljan kut | kut −180°…180° | Slika se ne odrezuje – platno se poveća da stane cijela zarotirana slika | Planirano |
-| GEO-04 | Zrcaljenje | os: vodoravno, okomito, obje | Dvostruko zrcaljenje po istoj osi daje izvornu sliku | Planirano |
-| GEO-05 | Izrezivanje | lijevo, gore, širina, visina (u %) | Rezultat ima zadane dimenzije; vrijednosti izvan slike se ograniče na rub | Planirano |
+| GEO-01 | Promjena veličine | mjerilo 5–400 % (zadano 50) | Uz 50 % širina i visina se prepolove; omjer stranica ostaje isti | Implementirano |
+| GEO-02 | Rotacija za 90°/180°/270° | kut | Rotacija za 90° zamijeni širinu i visinu; dvije rotacije za 180° daju izvornu sliku | Implementirano |
+| GEO-03 | Rotacija za proizvoljan kut | kut −180°…180° | Slika se ne odrezuje – platno se poveća da stane cijela zarotirana slika | Implementirano |
+| GEO-04 | Zrcaljenje | os: vodoravno, okomito, obje | Dvostruko zrcaljenje po istoj osi daje izvornu sliku | Implementirano |
+| GEO-05 | Izrezivanje | lijevo, gore, širina, visina (u %) | Rezultat ima zadane dimenzije; vrijednosti izvan slike se ograniče na rub | Implementirano |
 
 ## Segmentacija (F-003.4)
 
