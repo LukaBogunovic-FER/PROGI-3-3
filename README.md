@@ -74,7 +74,7 @@ Navedite nekoliko tehnologija i vanjskih usluga koje bitno određuju kako vaša 
 | Luka Milošević | [Uloga ili doprinos] |
 | Petar Gabriel | [Uloga ili doprinos] |
 | Tin Karalić | Backend |
-| Eugen Korak ||
+| Eugen Korak | Društveni dio i obrasci uporabe |
 | Mislav Brkić ||
 | Luka Bogunović ||
 | Borna Dramalija ||

@@ -12,6 +12,12 @@
 
 **PlantUML izvor:** [izvor](./puml/3-1-imagic-workspace-UC.puml)
 
+![Dijagram obrazaca uporabe društvenog dijela sustava Pictora](./assets/diagrams/3-2-pictora-social-UC.png)
+
+**Slika 3.2. Dijagram obrazaca uporabe društvenog dijela sustava Pictora (javni profili, objave i favoriti)**
+
+**PlantUML izvor:** [izvor](./puml/3-2-pictora-social-UC.puml)
+
 **Provjera dijagrama:** Prikažite prepoznate uloge koje **komuniciraju s aplikacijom**, a ne dionike koji s njom nemaju interakciju. Svaki glavni korisnički cilj mora imati pridruženog aktera; uključeni obrazac uporabe može se dosegnuti preko drugog obrasca uporabe bez vlastite izravne veze s akterom. `<<include>>` i `<<extend>>` koristite samo kada odnos odgovara stvarnom ponašanju.
 
 <details>
@@ -54,6 +60,72 @@ Vanjski sustav može biti sekundarni akter obrasca uporabe kada sudjeluje u ostv
 | **Glavni uspješni tok** | 1. Korisnik odabere uvoz (gumb ili povlačenje datoteka u mapu).<br>2. Korisnik odabere jednu ili više rasterskih slika s računala.<br>3. Sustav provjeri format i veličinu svake datoteke.<br>4. Sustav pohrani slike u odabranu mapu i prikaže napredak.<br>5. Sustav prikaže nove slike u popisu mape. |
 | **Alternativni tokovi / Iznimke** | **3a — Nepodržani format:** sustav odbije tu datoteku, prikaže jasnu poruku (NF-03) i nastavi s ostalima.<br>**3b — Datoteka prevelika ili oštećena:** sustav je odbije uz poruku i nastavi s ostalima.<br>**4a — Greška pri pohrani:** sustav prikaže poruku, slika se ne dodaje, korisnik može pokušati ponovno. |
 | **Posljedice (ishod)** | Slike su pohranjene u odabranoj mapi u radnoj okolini korisnika i vidljive samo njemu. |
+
+### UC-12: Uređivanje javnog profila
+
+| Element specifikacije | Opis |
+| :--- | :--- |
+| **Primarni akter** | Registrirani korisnik |
+| **Povezani zahtjevi** | F-006 |
+| **Preduvjeti** | Korisnik je prijavljen u sustav. |
+| **Glavni uspješni tok** | 1. Korisnik otvara postavke svog profila.<br>2. Sustav prikazuje trenutačno korisničko ime, prikazano ime i kratki opis korisnika.<br>3. Korisnik mijenja željene podatke i odabire spremanje.<br>4. Sustav provjerava valjanost unosa i sprema izmjene.<br>5. Sustav prikazuje ažurirane podatke na javnoj stranici korisnika. |
+| **Alternativni tokovi / Iznimke** | **4a — Prazno korisničko ime:** sustav ne prihvaća prazan unos i zadržava valjano korisničko ime. |
+| **Posljedice (ishod)** | Podaci na javnoj stranici korisnika su ažurirani. |
+
+### UC-13: Objava slike i odabir vidljivosti
+
+| Element specifikacije | Opis |
+| :--- | :--- |
+| **Primarni akter** | Registrirani korisnik |
+| **Povezani zahtjevi** | F-006, F-007 |
+| **Preduvjeti** | Korisnik je prijavljen i posjeduje rastersku sliku za objavu. |
+| **Glavni uspješni tok** | 1. Korisnik na svojoj javnoj stranici odabire opciju za novu objavu.<br>2. Korisnik odabire sliku, unosi tekstualni opis (npr. opis kako je slika nastala) te bira vidljivost (**Javno** ili **Privatno**).<br>3. Korisnik potvrđuje objavu.<br>4. Sustav sprema objavu i prikazuje je na profilu korisnika. |
+| **Alternativni tokovi / Iznimke** | **2a — Korisnik odustane od unosa:** zatvaranjem obrasca objava se ne sprema i profil ostaje nepromijenjen. |
+| **Posljedice (ishod)** | Objava je pohranjena na profilu korisnika; javna objava vidljiva je svim prijavljenim korisnicima, a privatna samo vlasniku profila. |
+
+### UC-14: Uređivanje i brisanje objave
+
+| Element specifikacije | Opis |
+| :--- | :--- |
+| **Primarni akter** | Registrirani korisnik |
+| **Povezani zahtjevi** | F-006, F-007 |
+| **Preduvjeti** | Korisnik je prijavljen i ima barem jednu objavu na svojoj javnoj stranici. |
+| **Glavni uspješni tok** | 1. Korisnik na vlastitoj objavi odabire promjenu vidljivosti (javno/privatno), uređivanje tekstualnog opisa ili brisanje objave.<br>2. Sustav sprema izmjenu opisa/vidljivosti ili uklanja objavu s profila.<br>3. Sustav ažurira prikaz objava na profilu i u pregledu javnih objava. |
+| **Alternativni tokovi / Iznimke** | **1a — Odustajanje od uređivanja:** korisnik zatvara prozor za uređivanje bez spremanja te opis ostaje nepromijenjen. |
+| **Posljedice (ishod)** | Objava je ažurirana ili obrisana s javne stranice korisnika. |
+
+### UC-15: Pregled javnih stranica i objava
+
+| Element specifikacije | Opis |
+| :--- | :--- |
+| **Primarni akter** | Registrirani korisnik |
+| **Povezani zahtjevi** | F-007, F-008 |
+| **Preduvjeti** | Korisnik je prijavljen u sustav. |
+| **Glavni uspješni tok** | 1. Korisnik otvara stranicu *Explore* i po želji upisuje pojam za pretragu.<br>2. Sustav prikazuje javne profile korisnika i sve objave označene kao **javne** (dok su privatne objave skrivene).<br>3. Korisnik može otvoriti javnu stranicu odabranog korisnika i pregledati njegov opis i njegove javne objave. |
+| **Alternativni tokovi / Iznimke** | **2a — Nema rezultata za upisani pojam:** sustav prikazuje obavijest da nema pronađenih javnih objava. |
+| **Posljedice (ishod)** | Korisniku su prikazane javne stranice i javne objave drugih korisnika. |
+
+### UC-16: Upravljanje favoritima
+
+| Element specifikacije | Opis |
+| :--- | :--- |
+| **Primarni akter** | Registrirani korisnik |
+| **Povezani zahtjevi** | F-008 |
+| **Preduvjeti** | Korisnik je prijavljen i pregledava javne objave ili javne stranice drugih korisnika. |
+| **Glavni uspješni tok** | 1. Korisnik odabire opciju dodavanja u favorite na pojedinoj javnoj objavi ili na javnoj stranici drugog korisnika.<br>2. Sustav sprema odabranu objavu ili javnu stranicu u popis favorita.<br>3. Korisnik na stranici *Favorites* pregledava spremljene objave i javne stranice te ih po želji uklanja iz favorita. |
+| **Alternativni tokovi / Iznimke** | **3a — Objava u favoritima postane privatna:** sustav takvu objavu više ne prikazuje u popisu favorita drugim korisnicima. |
+| **Posljedice (ishod)** | Popis favorita korisnika je ažuriran. |
+
+### UC-17: Preuzimanje ili kopiranje javne slike
+
+| Element specifikacije | Opis |
+| :--- | :--- |
+| **Primarni akter** | Registrirani korisnik |
+| **Povezani zahtjevi** | F-009 |
+| **Preduvjeti** | Korisnik je prijavljen i pregledava javnu objavu drugog korisnika. |
+| **Glavni uspješni tok** | 1. Korisnik na tuđoj javnoj objavi odabire **Preuzmi** ili **Kopiraj u radnu okolinu**.<br>2. Ako je odabrano preuzimanje, rasterska slika sprema se lokalno na računalo korisnika.<br>3. Ako je odabrano kopiranje u radnu okolinu, sustav sprema kopiju slike u korisnikovu radnu okolinu i prikazuje poruku potvrde. |
+| **Alternativni tokovi / Iznimke** | **1a — Objava više nije dostupna:** sustav ne izvršava radnju i obavještava korisnika. |
+| **Posljedice (ishod)** | Slika s tuđe javne stranice preuzeta je lokalno ili dodana u radnu okolinu korisnika. |
 
 <details>
 <summary><strong>Primjeri specifikacija: Registracija i prijava kriznog događaja</strong></summary>
