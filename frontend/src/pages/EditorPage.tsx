@@ -1,8 +1,10 @@
 // Imports
 import { useEffect, useState, useRef } from 'react'
-import { Title } from '@mantine/core'
+import { Title, Tabs, Button, Group, Stack, Slider, Text, Select } from '@mantine/core'
 import { Image, readImg, writeCanvas } from 'image-js'
 // import { useParams } from 'react-router-dom'
+import { applyOp, OPS, CATEGORY_LABELS, defaultParams } from '../imaging/ops'
+import type { Params } from '../imaging/ops'
 
 // Image Editor page
 export default function EditorPage() {
@@ -12,6 +14,8 @@ export default function EditorPage() {
   // State
   const [imageFile, setImageFile] = useState<File | null>(null)
   const [imageUrl, setImageUrl] = useState<string | null>(null)
+  const [selectedOpId, setSelectedOpId] = useState<string | null>(null)
+  const [opParams, setOpParams] = useState<Params>({})
   
   // References
   const canvasRef = useRef<HTMLCanvasElement | null>(null)
@@ -47,75 +51,34 @@ export default function EditorPage() {
    *  Image editing functions 
    * 
    */
-  function handleGrayscale() {
+  function handleApplyOp(id: string) {
     if (!editedImageRef.current || !canvasRef.current) {
       return
     }
 
-    const grayscaleImage = editedImageRef.current.grey()
+    const result = applyOp(id, editedImageRef.current, opParams)
 
-    editedImageRef.current = grayscaleImage
-    writeCanvas(grayscaleImage, canvasRef.current)
+    editedImageRef.current = result.image
+    writeCanvas(result.image, canvasRef.current)
+  }
+
+  function handleSelectOp(id: string) {
+    const op = OPS.find(op => op.id === id)
+
+    if (!op) {
+      return
+    }
+
+    setSelectedOpId(id)
+    setOpParams(defaultParams(op))
 
   }
 
-  function handleInvert() {
-    if (!editedImageRef.current || !canvasRef.current) {
-      return
-    }
-
-    const invertedImage = editedImageRef.current.invert()
-
-    editedImageRef.current = invertedImage
-    writeCanvas(invertedImage, canvasRef.current)
-
-  }
-
-  function handleRotateRight() {
-    if (!editedImageRef.current || !canvasRef.current) {
-      return
-    }
-
-    const rotatedImage = editedImageRef.current.rotate(90)
-
-    editedImageRef.current = rotatedImage
-    writeCanvas(rotatedImage, canvasRef.current)
-
-  }
-
-  function handleRotateLeft() {
-    if (!editedImageRef.current || !canvasRef.current) {
-      return
-    }
-
-    const rotatedImage = editedImageRef.current.rotate(-90)
-
-    editedImageRef.current = rotatedImage
-    writeCanvas(rotatedImage, canvasRef.current)
-
-  }
-
-  function handleFlipHorizontal() {
-    if (!editedImageRef.current || !canvasRef.current) {
-      return
-    }
-
-    const flippedImage = editedImageRef.current.flip({ axis: 'horizontal' })
-
-    editedImageRef.current = flippedImage
-    writeCanvas(flippedImage, canvasRef.current)
-
-  }
-
-  function handleFlipVertical() {
-    if (!editedImageRef.current || !canvasRef.current) {
-      return
-    }
-
-    const flippedImage = editedImageRef.current.flip({ axis: 'vertical' })
-
-    editedImageRef.current = flippedImage
-    writeCanvas(flippedImage, canvasRef.current)
+  function handleParamChange(key: string, value: number | string) {
+    setOpParams(prev => ({
+      ...prev,
+      [key]: value
+    }))
 
   }
 
@@ -186,38 +149,113 @@ export default function EditorPage() {
           />
 
           {/* Image editing controls */}
-          <button onClick={handleGrayscale}>
-            Grayscale
-          </button>
+          <Tabs 
+            defaultValue="filter"
+            onChange={() => {
+              setSelectedOpId(null)
+              setOpParams({})
+            }}
+          >
+            <Tabs.List>
+              {Object.entries(CATEGORY_LABELS).map(([category, label]) => {
+                const operations = OPS.filter(op => op.category === category)
 
-          <button onClick={handleInvert}>
-            Invert
-          </button>
+                if (operations.length === 0) return null
 
-          <button onClick={handleRotateRight}>
-            Rotate Right
-          </button>
+                return (
+                  <Tabs.Tab key={category} value={category}>
+                    {label}
+                  </Tabs.Tab>
+                )
 
-          <button onClick={handleRotateLeft}>
-            Rotate Left
-          </button>
+              })}
+            </Tabs.List>
 
-          <button onClick={handleFlipHorizontal}>
-            Flip Horizontal
-          </button>
+            {Object.entries(CATEGORY_LABELS).map(([category]) => {
+              const operations = OPS.filter(op => op.category === category)
 
-          <button onClick={handleFlipVertical}>
-            Flip Vertical
-          </button>
+              if (operations.length === 0) return null
 
-          <button onClick={handleResetChanges}>
-            Reset Changes
-          </button>
+              return (
+                <Tabs.Panel key={category} value={category} pt="md">
+                  <Group gap="sm">
+                    {operations.map(op => (
+                      <Button
+                        key={op.id}
+                        variant="light"
+                        onClick={() => handleSelectOp(op.id)}
+                      >
+                        {op.label}
+                      </Button>
 
+                    ))}
+                  </Group>
+                </Tabs.Panel>
+
+              )
+
+            })}
+          </Tabs>
+
+          {selectedOpId && (
+            <div>
+              <p>
+                Selected operation: {OPS.find(op => op.id === selectedOpId)?.label}
+              </p>
+
+              {OPS.find(op => op.id === selectedOpId)?.params.map(param => (
+                <div key={param.key}>
+                  {param.type === 'number' ? (
+                    <Stack gap="xs" w={250}>
+                      <Group justify="space-between">
+                        <Text size="sm">{param.label}</Text>
+
+                        <Text size="sm" fw={600}>
+                          {opParams[param.key] ?? param.default}
+                        </Text>
+                      </Group>
+
+                      <Slider
+                        min={param.min}
+                        max={param.max}
+                        step={param.step}
+                        value={Number(opParams[param.key] ?? param.default)}
+                        onChange={value => handleParamChange(param.key, value)}
+                        label={value => `${value}`}
+                      />
+                    </Stack>
+                  ) : (
+                    <Select
+                      label={param.label}
+                      data={param.options}
+                      value={String(opParams[param.key] ?? param.default)}
+                      onChange={value => {
+                        if (value !== null) {
+                          handleParamChange(param.key, value)
+                        }
+                      }}
+                    />
+                  )}
+                </div>
+              ))}
+
+              <Button onClick={() => handleApplyOp(selectedOpId)}>
+                Apply
+              </Button>
+
+            </div>
+
+          )}
+
+          <Stack mt="md" align="flex-start">
+            <Button color="red" variant="outline" onClick={handleResetChanges}>
+              Reset Changes
+            </Button>
+
+          </Stack>
         </>
 
       )}
-
     </main>
 
   )
