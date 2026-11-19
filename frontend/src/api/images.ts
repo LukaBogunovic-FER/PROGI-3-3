@@ -19,3 +19,15 @@ export async function uploadImage(file: Blob): Promise<string> {
     // Return the generated filename
     return response.text()
 }
+
+// Fetch filenames of all stored images.
+export async function getAllImages(): Promise<string[]> {
+    
+  const response = await fetch("/api/images");
+
+  if (!response.ok) {
+    throw new Error("Failed to fetch images");
+  }
+
+  return response.json();
+}
