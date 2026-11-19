@@ -1,4 +1,5 @@
-import { Image, Mask } from 'image-js'
+import { computeThreshold, Image, Mask } from 'image-js'
+import { colorizeLabels, labelComponents } from './segmentation'
 
 // Sve operacije obrade slike na jednom mjestu. Editor iz ove liste
 // slaze panel s alatima, pa nova operacija = novi zapis u OPS + test.
@@ -280,6 +281,71 @@ export const OPS: OpDef[] = [
       const width = Math.max(1, Math.min(img.width - column, Math.round((img.width * num(p, 'width')) / 100)))
       const height = Math.max(1, Math.min(img.height - row, Math.round((img.height * num(p, 'height')) / 100)))
       return img.crop({ origin: { column, row }, width, height })
+    },
+  },
+
+  // ---------- segmentacija ----------
+  {
+    id: 'threshold',
+    label: 'Threshold (Otsu)',
+    category: 'segmentation',
+    input: 'grey',
+    params: [],
+    run: (img) => {
+      // Otsu sam odabere prag iz histograma, vrijednost prikazujemo korisniku
+      const value = computeThreshold(img, { algorithm: 'otsu' })
+      const mask = img.threshold({ algorithm: 'otsu' })
+      return { image: mask.convertColor('GREY'), info: `Otsu threshold: ${value}` }
+    },
+  },
+  {
+    id: 'regions',
+    label: 'Region labelling',
+    category: 'segmentation',
+    input: 'grey',
+    params: [
+      {
+        key: 'connectivity',
+        label: 'Connectivity',
+        type: 'select',
+        default: '8',
+        options: [
+          { value: '8', label: '8 neighbours' },
+          { value: '4', label: '4 neighbours' },
+        ],
+      },
+      { key: 'minSize', label: 'Ignore regions smaller than (px)', type: 'number', min: 1, max: 500, step: 1, default: 20 },
+      {
+        key: 'objects',
+        label: 'Objects are',
+        type: 'select',
+        default: 'bright',
+        options: [
+          { value: 'bright', label: 'Bright' },
+          { value: 'dark', label: 'Dark' },
+        ],
+      },
+    ],
+    run: (img, p) => {
+      // prvo Otsu da dobijemo objekte i pozadinu, onda oznacavanje podrucja
+      let mask = img.threshold({ algorithm: 'otsu' })
+      if (str(p, 'objects') === 'dark') mask = mask.invert()
+
+      const { width, height } = mask
+      const foreground = new Uint8Array(width * height)
+      for (let y = 0; y < height; y++) {
+        for (let x = 0; x < width; x++) foreground[y * width + x] = mask.getBit(x, y)
+      }
+
+      const { labels, count } = labelComponents(
+        foreground,
+        width,
+        height,
+        num(p, 'connectivity') as 4 | 8,
+        num(p, 'minSize'),
+      )
+      const image = new Image(width, height, { colorModel: 'RGB', data: colorizeLabels(labels) })
+      return { image, info: `${count} ${count === 1 ? 'region' : 'regions'} found` }
     },
   },
 ]
