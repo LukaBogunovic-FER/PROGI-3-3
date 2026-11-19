@@ -56,8 +56,8 @@ Zadatak traži najmanje jedan algoritam segmentacije.
 
 | ID | Operacija | Parametri | Kriterij prihvaćanja | Status |
 |---|---|---|---|---|
-| SEG-01 | Prag (Otsu) | – | Rezultat je crno-bijela slika; na slici s dvije razine sivoga prag pada između njih; prikazuje se vrijednost praga | Planirano |
-| SEG-02 | Označavanje povezanih područja | povezanost 4 ili 8; najmanja veličina područja | Na ispitnoj slici s tri odvojena oblika pronalaze se točno 3 područja; svako područje dobiva svoju boju i prikazuje se njihov broj | Planirano |
+| SEG-01 | Prag (Otsu) | – | Rezultat je crno-bijela slika; na slici s dvije razine sivoga prag pada između njih; prikazuje se vrijednost praga | Implementirano |
+| SEG-02 | Označavanje povezanih područja | povezanost 4 ili 8; najmanja veličina područja | Na ispitnoj slici s tri odvojena oblika pronalaze se točno 3 područja; svako područje dobiva svoju boju i prikazuje se njihov broj | Implementirano |
 
 ## Nefunkcijski zahtjevi za obradu slike
 
