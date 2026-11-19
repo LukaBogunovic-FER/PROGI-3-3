@@ -93,3 +93,12 @@ export function numbered(width = 4, height = 3): Image {
   }
   return img
 }
+
+// dvije razine sivoga: lijevo 40, desno 200
+export function bimodal(width = 20, height = 10): Image {
+  const img = new Image(width, height, { colorModel: 'GREY' })
+  for (let y = 0; y < height; y++) {
+    for (let x = 0; x < width; x++) img.setPixel(x, y, [x < width / 2 ? 40 : 200])
+  }
+  return img
+}

@@ -2,6 +2,7 @@ import { Image } from 'image-js'
 import { describe, expect, it } from 'vitest'
 import { applyOp, defaultParams, describeStep, getOp, OPS } from './ops'
 import {
+  bimodal,
   dot,
   gradient,
   lowContrast,
@@ -43,11 +44,12 @@ describe('registry', () => {
     }
   })
 
-  it('has at least 5 filters, 4 morphology ops and 3 geometric transforms', () => {
+  it('meets the brief: 5 filters, 4 morphology ops, 3 geometric transforms, 1 segmentation', () => {
     const count = (c: string) => OPS.filter((o) => o.category === c).length
     expect(count('filter')).toBeGreaterThanOrEqual(5)
     expect(count('morphology')).toBeGreaterThanOrEqual(4)
     expect(count('geometric')).toBeGreaterThanOrEqual(3)
+    expect(count('segmentation')).toBeGreaterThanOrEqual(1)
   })
 
   it('throws for an unknown op', () => {
@@ -264,5 +266,32 @@ describe('geometric', () => {
     const out = applyOp('crop', twoSquares(), { left: 90, top: 90, width: 100, height: 100 }).image
     expect(out.width).toBe(4)
     expect(out.height).toBe(3)
+  })
+})
+
+describe('segmentation', () => {
+  it('Otsu threshold gives a black and white image and shows the value', () => {
+    const { image, info } = applyOp('threshold', bimodal())
+    expect(image.getPixel(2, 5)).toEqual([0])
+    expect(image.getPixel(17, 5)).toEqual([255])
+    const value = Number(info?.replace('Otsu threshold: ', ''))
+    expect(value).toBeGreaterThanOrEqual(40)
+    expect(value).toBeLessThanOrEqual(200)
+  })
+
+  it('region labelling finds the two blue squares', () => {
+    const { image, info } = applyOp('regions', twoSquares(), { connectivity: '8', minSize: 5, objects: 'dark' })
+    expect(info).toBe('2 regions found')
+    expect(image.colorModel).toBe('RGB')
+    // pozadina crna, kvadrati obojani razlicitim bojama
+    expect(image.getPixel(0, 0)).toEqual([0, 0, 0])
+    expect(image.getPixel(8, 8)).not.toEqual([0, 0, 0])
+    expect(image.getPixel(8, 8)).not.toEqual(image.getPixel(28, 18))
+  })
+
+  it('minSize removes small regions', () => {
+    const { info } = applyOp('regions', twoSquares(), { connectivity: '8', minSize: 60, objects: 'dark' })
+    // prvi kvadrat ima 49 piksela, drugi 64
+    expect(info).toBe('1 region found')
   })
 })
