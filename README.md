@@ -72,7 +72,7 @@ Navedite nekoliko tehnologija i vanjskih usluga koje bitno određuju kako vaša 
 | Član | Glavna uloga ili doprinos |
 | --- | --- |
 | Luka Milošević | [Uloga ili doprinos] |
-| Petar Gabriel | [Uloga ili doprinos] |
+| Petar Gabriel | Frontend + Google OAuth2.0 |
 | Tin Karalić | Backend |
 | Eugen Korak | Društveni dio i obrasci uporabe |
 | Mislav Brkić ||
