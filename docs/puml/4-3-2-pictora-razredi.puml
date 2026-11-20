@@ -1,0 +1,42 @@
+@startuml
+skinparam classAttributeIconSize 0
+
+package "config" {
+  class SecurityConfig {
+    +securityFilterChain(http : HttpSecurity) : SecurityFilterChain
+  }
+}
+
+package "controller" {
+  class AuthController {
+    +getCurrentUser(user : OidcUser) : MeResponse
+    +getCsrfToken(csrfToken : CsrfToken) : ResponseEntity<Void>
+  }
+
+  class MeResponse <<record>> {
+    id : String
+    name : String
+    email : String
+    avatarUrl : String
+  }
+
+  class ImageController {
+    -imageStorageService : ImageStorageService
+    +uploadImage(file : MultipartFile) : ResponseEntity<String>
+    +getImage(filename : String) : ResponseEntity<Resource>
+    +getAllImages() : ResponseEntity<List<String>>
+  }
+}
+
+package "service" {
+  class ImageStorageService {
+    -uploadDirectory : Path
+    +saveImage(file : MultipartFile) : String
+    +getImage(filename : String) : Resource
+    +getAllImages() : List<String>
+  }
+}
+
+AuthController ..> MeResponse : stvara
+ImageController --> ImageStorageService : koristi
+@enduml

@@ -21,8 +21,15 @@ Za svaki UML dijagram čuvajte čitljivu sliku i PlantUML izvor, kako je opisano
 **Cilj:** Objasniti nekoliko arhitekturnih odluka koje najviše utječu na rješenje i navesti njihove projektno specifične razloge.
 
 | Odluka | Razmatrana alternativa | Projektno specifično obrazloženje i kompromis |
-| --- | --- | --- |
-|  |  |  |
+| :--- | :--- | :--- |
+| Jednostranična web aplikacija (React) koja s poslužiteljem komunicira samo preko REST API-ja pod '/api' | Stranice generirane na poslužitelju | Stablo mapa, pregled slika i uređivač traže puno interakcije bez ponovnog učitavanja stranice, a jasno sučelje API-ja omogućuje da frontend i backend razvijaju različiti članovi paralelno. Kompromis: dva projekta koja treba uskladiti (oblik odgovora, proxy u razvoju, sesije i CSRF). |
+| Mantine kao biblioteka komponenti sučelja | gluestack UI | Mantine ima gotove komponente koje zadatak traži (drag-and-drop upload, dijalozi s potvrdom, obavijesti o greškama) i radi u web projektu bez dodatne konfiguracije. gluestack je usmjeren na zajedničko sučelje za web i mobilne aplikacije, što projekt ne treba. Kompromis: vezanost uz Mantineov API i stil, a svi članovi koji rade sučelje moraju koristiti istu biblioteku. |
+| TanStack Query za dohvat podataka | Ručni 'fetch' sa stanjima u svakoj komponenti | Biblioteka vodi stanja učitavanja i greške te kešira odgovore, pa se dohvat svake vrste podataka piše na jednom mjestu (hook u 'frontend/src/api'). Kompromis: dodatna ovisnost i pojmovi (ključevi upita, osvježavanje keša) koje tim mora naučiti. |
+| Mock Service Worker za razvoj bez backenda | Čekanje na gotov backend | Frontend se razvija prije gotovih endpointa, a komponente pišu prave HTTP zahtjeve, pa prelazak na pravi backend znači samo drugačije pokretanje ('npm run dev' umjesto 'npm run dev:mock'). Kompromis: mockovi se mogu razilaziti od stvarnog API-ja, pa ih treba uskladiti s oblikom odgovora koji backend stvarno vraća. |
+| Prijava se u cijelosti odvija na poslužitelju (Spring Security, OAuth 2.0 s Googleom, sesija), a frontend samo pita 'GET /api/me' i štiti rute prema odgovoru | Frontend sam vodi OAuth tok i čuva token | Tajne i sesija ostaju na poslužitelju, a neprijavljeni zahtjevi prema '/api/**' dobivaju status 401 umjesto preusmjeravanja, što aplikacija u pregledniku jednostavno obrađuje. Kompromis: u razvoju frontend i backend moraju dijeliti izvor (proxy) da bi sesija radila, zahtjevi koji mijenjaju podatke traže CSRF token ('GET /api/csrf'), a adrese preusmjeravanja nakon prijave trenutno su upisane u kod. |
+| Obrada slika u pregledniku (ImageJS) | Obrada na poslužitelju | Rezultat operacije vidi se odmah i ne opterećuje poslužitelj, a zadatak dopušta vanjski API poput ImageJS-a. Kompromis: velike slike troše memoriju preglednika, a obrađeni rezultat se pri spremanju mora poslati backendu. |
+| Jedna Spring Boot aplikacija koja izlaže REST API | Više zasebno postavljenih usluga | Opseg projekta i veličina tima traže jednu aplikaciju koja se gradi i pokreće jednom naredbom (Maven wrapper), a odgovornosti (autentifikacija, pohrana slika) razdvojene su u pakete i razrede. Kompromis: kvar jednog dijela zaustavlja cijelu aplikaciju, a dijelovi se ne mogu zasebno skalirati. |
+| Slike se pohranjuju kao datoteke u direktoriju 'uploads' na poslužitelju pod jedinstvenim (UUID) nazivom | Pohrana sadržaja slike u bazu podataka | Datoteke se jednostavno poslužuju i ne opterećuju bazu, a jedinstveni nazivi i provjera putanje sprječavaju sudaranje naziva i pristup datotekama izvan direktorija. Kompromis: pohrana je vezana uz disk jedne instance (pri postavljanju treba trajni volumen), a podaci o vlasniku, mapi i izvornom nazivu slike traže zasebnu evidenciju u bazi. |
 
 Objasnite glavne arhitekturne odluke bez ponavljanja popisa tehnologija. Ako važna odluka ima ADR, dovoljno je u tablici navesti njegov ID.
 
@@ -83,9 +90,33 @@ Započnite crtanjem granice oko predloženog sustava. Unutar nje prepoznajte dij
 
 **Cilj:** Prikazati važne pohranjene entitete, njihove identifikatore i veze te dovoljno atributa za razumijevanje podataka aplikacije. ER dijagram odvojen je od reprezentativnog UML dijagrama razreda u nastavku.
 
-**ER dijagram:** [Ugradite čitljiv dijagram projekta.]  
-**Izvor dijagrama:** [Poveznica na njegov izvor.]  
-**Implementacija:** [Navedite gdje je odgovarajući model podataka definiran u projektu.]
+**Trenutno stanje.** Backend u ovoj inačici nema bazu podataka. Trajni podaci su:
+
+- datoteke slika u direktoriju `backend/uploads`, imenovane `<UUID>.<ekstenzija>` ([ImageStorageService](../backend/src/main/java/hr/fer/pictora/service/ImageStorageService.java)),
+- podaci o prijavljenom korisniku (identifikator `sub`, ime, e-pošta, slika profila) koji dolaze iz Googleova OpenID Connect odgovora i postoje samo u sesiji ([AuthController](../backend/src/main/java/hr/fer/pictora/controller/AuthController.java)).
+
+**Planirani model.** Zahtjevi F-002 (mape), F-005 (privatna radna okolina) i F-006 do F-009 (objave i favoriti) traže trajnu evidenciju vlasnika, mapa i objava, pa je za sljedeću inačicu planirana relacijska baza sa sljedećim entitetima:
+
+| Entitet | Svrha | Ključni atributi |
+| :--- | :--- | :--- |
+| `users` | Registrirani korisnik i podaci njegove javne stranice | `id`, `oauth_subject` (jedinstven, vrijednost `sub` iz Googlea), `name`, `email`, `avatar_url`, `bio` |
+| `folders` | Struktura direktorija radne okoline | `id`, `owner_id`, `parent_id` (prazan za korijensku mapu), `name` |
+| `images` | Metapodaci o slici; sadržaj ostaje u datoteci | `id`, `owner_id`, `folder_id`, `name`, `format`, `size_bytes`, `storage_filename`, `created_at` |
+| `posts` | Objava sa slikom i opisom na javnoj stranici | `id`, `author_id`, `image_id`, `description`, `is_public`, `created_at` |
+| `favorite_posts` | Objave koje je korisnik označio kao favorite | `user_id`, `post_id` |
+| `favorite_profiles` | Javne stranice koje je korisnik označio kao favorite | `user_id`, `profile_user_id` |
+
+Pravila modela: svaki upit nad mapama i slikama filtrira se po vlasniku (`owner_id`), što ostvaruje F-005; sadržaj slika ostaje na disku, a baza čuva samo metapodatke; naziv mape i slike jedinstven je unutar roditeljske mape (pretpostavka na kojoj se temelje obrasci uporabe UC-03 i UC-05 do UC-07).
+
+**ER dijagram:**
+
+![ER dijagram sustava Pictora (planirani model)](./assets/diagrams/4-3-1-pictora-ER.png)
+
+**Slika 4.3.1. ER dijagram planiranog modela podataka**
+
+**Izvor dijagrama:** [izvor](./puml/4-3-1-pictora-ER.puml)
+
+**Implementacija:** model još nije implementiran. Do uvođenja baze postoji samo pohrana datoteka u [ImageStorageService](../backend/src/main/java/hr/fer/pictora/service/ImageStorageService.java); definicije entiteta navest će se ovdje kad budu u kodu.
 
 <details>
 <summary><strong>Jedna prijava poplave i povezani podaci</strong></summary>
@@ -106,9 +137,37 @@ Započnite crtanjem granice oko predloženog sustava. Unutar nje prepoznajte dij
 
 **Cilj:** Prije implementacije reprezentativnog dijela sustava modelirati i prikazati razrede ili sučelja potrebna za dodjelu odgovornosti, operacija i veza. Oblikovanje ažurirajte kada se te odluke promijene.
 
-**Dijagram razreda:** [Ugradite čitljiv UML dijagram razreda za reprezentativni dio oblikovanja.]  
-**PlantUML izvor:** [Poveznica na odgovarajuću `.puml` datoteku.]  
-**Referenca na kod pri završnom pregledu:** [Poveznica na odgovarajuću implementaciju.]
+**Područje oblikovanja: prijava i pohrana slika.** Odabrano je jer prikazuje slojeve aplikacije (kontroler, servis, pohrana) i sigurnosnu konfiguraciju koja vrijedi za sve ostalo.
+
+**Dijagram razreda:**
+
+![Dijagram razreda backenda: prijava i pohrana slika](./assets/diagrams/4-3-2-pictora-razredi.png)
+
+**Slika 4.3.2. Dijagram razreda: prijava i pohrana slika**
+
+**PlantUML izvor:** [izvor](./puml/4-3-2-pictora-razredi.puml)
+
+| Razred | Odgovornost |
+| :--- | :--- |
+| `SecurityConfig` | Središnje mjesto sigurnosnih pravila: što je javno (`/api/health`, `/api/csrf`, `/oauth2/**`, `/login/**`), što traži prijavu (`/api/**`), 401 umjesto preusmjeravanja za neprijavljene API zahtjeve, CSRF zaštita prilagođena jednostraničnoj aplikaciji, prijava Googleom s preusmjeravanjem na frontend te odjava na `/api/logout`. |
+| `AuthController` | Vraća podatke prijavljenog korisnika (`GET /api/me`) i izdaje CSRF token (`GET /api/csrf`). |
+| `MeResponse` | Zapis (record) s podacima koje frontend dobiva o korisniku: `id`, `name`, `email`, `avatarUrl`. |
+| `ImageController` | REST sučelje za slike (`/api/images`): upload, dohvat jedne slike i popis. Pretvara iznimke servisa u HTTP statuse (404 za nepostojeću sliku, 400 za nevaljan naziv). |
+| `ImageStorageService` | Pohrana slika na disk: provjerava da datoteka nije prazna i da je tip PNG, JPEG ili WebP, dodjeljuje jedinstven naziv, čita sliku po nazivu uz zaštitu od izlaska iz direktorija `uploads` i vraća popis pohranjenih slika. |
+
+Odluke oblikovanja:
+
+- **Tanki kontroleri.** Kontroler prima zahtjev i oblikuje odgovor, a pravila pohrane nalaze se u servisu.
+- **Servis skriva datotečni sustav.** Kontroler ne zna gdje i kako su slike pohranjene, pa se pohrana može kasnije zamijeniti (npr. uz bazu) bez promjene kontrolera.
+- **Sigurnosna pravila na jednom mjestu.** Svi uvjeti pristupa nalaze se u `SecurityConfig`, a ne razasuti po kontrolerima.
+- **Zaštita putanje.** Naziv tražene slike razrješava se i normalizira te se odbija ako ne završi unutar direktorija `uploads`.
+- **Ubrizgavanje ovisnosti kroz konstruktor.** `ImageController` dobiva `ImageStorageService` u konstruktoru.
+
+**Referenca na kod pri završnom pregledu:**
+[SecurityConfig](../backend/src/main/java/hr/fer/pictora/config/SecurityConfig.java),
+[AuthController](../backend/src/main/java/hr/fer/pictora/controller/AuthController.java),
+[ImageController](../backend/src/main/java/hr/fer/pictora/controller/ImageController.java),
+[ImageStorageService](../backend/src/main/java/hr/fer/pictora/service/ImageStorageService.java)
 
 <details>
 <summary><strong>Oblikovanje odgovornosti prijave i dopuštenih promjena</strong></summary>
