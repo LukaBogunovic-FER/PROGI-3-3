@@ -6,17 +6,13 @@
 
 **Cilj:** Prikazati granicu sustava, relevantne aktere i njihove glavne ciljeve u **preglednom UML dijagramu obrazaca uporabe**. Ako je za razumijevanje pojedinog dijela sustava potrebno prikazati više detalja, taj dio izdvojite u dodatni usmjereni dijagram. Dodatni dijagrami trebaju produbiti dio preglednog modela, a ne stvarati nepovezane ili duplicirane prikaze istog sustava.
 
-![Dijagram obrazaca uporabe sustava Imagic](./assets/diagrams/3-1-imagic-workspace-UC.png)
 
 **Slika 3.1. Dijagram obrazaca uporabe sustava Pictora**
 
-**PlantUML izvor:** [izvor](./puml/3-1-imagic-workspace-UC.puml)
+**PlantUML izvor:** [izvor](./puml/3-1-pictora-UC.puml)
 
-![Dijagram obrazaca uporabe društvenog dijela sustava Pictora](./assets/diagrams/3-2-pictora-social-UC.png)
+![Dijagram obrazaca uporabe društvenog dijela sustava Pictora](./assets/diagrams/3-1-pictora-UC.png)
 
-**Slika 3.2. Dijagram obrazaca uporabe društvenog dijela sustava Pictora (javni profili, objave i favoriti)**
-
-**PlantUML izvor:** [izvor](./puml/3-2-pictora-social-UC.puml)
 
 **Provjera dijagrama:** Prikažite prepoznate uloge koje **komuniciraju s aplikacijom**, a ne dionike koji s njom nemaju interakciju. Svaki glavni korisnički cilj mora imati pridruženog aktera; uključeni obrazac uporabe može se dosegnuti preko drugog obrasca uporabe bez vlastite izravne veze s akterom. `<<include>>` i `<<extend>>` koristite samo kada odnos odgovara stvarnom ponašanju.
 
@@ -50,6 +46,30 @@ Vanjski sustav može biti sekundarni akter obrasca uporabe kada sudjeluje u ostv
 
 **Za svaki obrazac uporabe koristite jednu okomitu tablicu.** Navedite samo onoliko pojedinosti koliko interakcija zahtijeva; neprimjenjivu alternativu izostavite umjesto da je popunjavate samo radi forme.
 
+
+### UC-01: Prijava putem vanjskog pružatelja identiteta
+
+| Element specifikacije | Opis |
+| :--- | :--- |
+| **Primarni akter** | Registrirani korisnik |
+| **Sekundarni akter** | Pružatelj identiteta (OAuth 2.0) |
+| **Povezani zahtjevi** | F-004, F-005, F-010 |
+| **Preduvjeti** | Korisnik nije prijavljen i ima račun kod pružatelja identiteta. |
+| **Glavni uspješni tok** | 1. Korisnik otvori aplikaciju; sustav ga preusmjeri na stranicu za prijavu.<br>2. Korisnik odabere prijavu putem pružatelja identiteta.<br>3. Sustav preusmjeri korisnika pružatelju identiteta.<br>4. Korisnik se autentificira i odobri pristup.<br>5. Pružatelj identiteta vrati korisnika sustavu s potvrdom identiteta.<br>6. Sustav prepozna korisnika; ako se prijavljuje prvi put, stvori račun, radnu okolinu i u nju doda tri početne slike.<br>7. Sustav uspostavi sesiju i prikaže radnu okolinu. |
+| **Alternativni tokovi / Iznimke** | **4a — Korisnik odbije pristup ili odustane:** pružatelj identiteta vrati korisnika bez potvrde, sustav prikaže stranicu za prijavu s porukom i korisnik može pokušati ponovno.<br>**5a — Potvrda identiteta nije valjana ili pružatelj nije dostupan:** sustav ne uspostavlja sesiju, prikaže poruku o neuspjehu i ostaje na stranici za prijavu.<br>**6a — Stvaranje računa ili početnih slika nije uspjelo:** sustav ne dovršava prijavu, prikaže poruku i korisnik može pokušati ponovno. |
+| **Posljedice (ishod)** | Korisnik ima aktivnu sesiju i pristup samo svojoj radnoj okolini. Pri prvoj prijavi postoje račun i tri početne slike. |
+
+### UC-02: Pregled radne okoline
+
+| Element specifikacije | Opis |
+| :--- | :--- |
+| **Primarni akter** | Registrirani korisnik |
+| **Povezani zahtjevi** | F-002, F-005 |
+| **Preduvjeti** | Korisnik je prijavljen. |
+| **Glavni uspješni tok** | 1. Korisnik otvori radnu okolinu.<br>2. Sustav prikaže stablo mapa i sadržaj odabrane mape (podmape i slike s pregledima).<br>3. Korisnik odabere drugu mapu u stablu ili putem staze (breadcrumbs).<br>4. Sustav prikaže sadržaj te mape. |
+| **Alternativni tokovi / Iznimke** | **2a — Mapa je prazna:** sustav prikaže prazno stanje s uputom za uvoz slika.<br>**2b — Sadržaj se ne može dohvatiti:** sustav prikaže poruku o grešci i mogućnost ponovnog pokušaja.<br>**2c — Sesija je istekla:** sustav preusmjeri korisnika na prijavu. |
+| **Posljedice (ishod)** | Nema promjene podataka. Korisnik vidi isključivo svoje mape i slike. |
+
 ### UC-03: Uvoz slike u radnu okolinu
 
 | Element specifikacije | Opis |
@@ -60,6 +80,95 @@ Vanjski sustav može biti sekundarni akter obrasca uporabe kada sudjeluje u ostv
 | **Glavni uspješni tok** | 1. Korisnik odabere uvoz (gumb ili povlačenje datoteka u mapu).<br>2. Korisnik odabere jednu ili više rasterskih slika s računala.<br>3. Sustav provjeri format i veličinu svake datoteke.<br>4. Sustav pohrani slike u odabranu mapu i prikaže napredak.<br>5. Sustav prikaže nove slike u popisu mape. |
 | **Alternativni tokovi / Iznimke** | **3a — Nepodržani format:** sustav odbije tu datoteku, prikaže jasnu poruku (NF-03) i nastavi s ostalima.<br>**3b — Datoteka prevelika ili oštećena:** sustav je odbije uz poruku i nastavi s ostalima.<br>**4a — Greška pri pohrani:** sustav prikaže poruku, slika se ne dodaje, korisnik može pokušati ponovno. |
 | **Posljedice (ishod)** | Slike su pohranjene u odabranoj mapi u radnoj okolini korisnika i vidljive samo njemu. |
+
+### UC-04: Preuzimanje slike u odabranom formatu
+
+| Element specifikacije | Opis |
+| :--- | :--- |
+| **Primarni akter** | Registrirani korisnik |
+| **Povezani zahtjevi** | F-001 |
+| **Preduvjeti** | Korisnik je prijavljen i slika postoji u njegovoj radnoj okolini. |
+| **Glavni uspješni tok** | 1. Korisnik odabere sliku i radnju preuzimanja.<br>2. Sustav ponudi dostupne formate.<br>3. Korisnik odabere format.<br>4. Sustav pripremi sliku u tom formatu i pokrene preuzimanje na računalo korisnika. |
+| **Alternativni tokovi / Iznimke** | **3a — Korisnik odustane:** ništa se ne preuzima.<br>**4a — Pretvorba u odabrani format nije uspjela:** sustav prikaže poruku i ponudi drugi format. |
+| **Posljedice (ishod)** | Korisnik ima datoteku na računalu. Slika u radnoj okolini ostaje nepromijenjena. |
+
+### UC-05: Stvaranje mape
+
+| Element specifikacije | Opis |
+| :--- | :--- |
+| **Primarni akter** | Registrirani korisnik |
+| **Povezani zahtjevi** | F-002 |
+| **Preduvjeti** | Korisnik je prijavljen i nalazi se u mapi svoje radne okoline. |
+| **Glavni uspješni tok** | 1. Korisnik odabere stvaranje nove mape.<br>2. Korisnik unese naziv.<br>3. Sustav provjeri naziv i stvori mapu unutar trenutne mape.<br>4. Sustav prikaže novu mapu u stablu i popisu. |
+| **Alternativni tokovi / Iznimke** | **3a — Naziv je prazan ili nevaljan:** sustav prikaže poruku i ne stvara mapu.<br>**3b — Mapa s tim nazivom već postoji na toj razini:** sustav prikaže poruku i traži drugi naziv.<br>**3c — Spremanje nije uspjelo:** sustav prikaže poruku, mapa se ne stvara. |
+| **Posljedice (ishod)** | Nova prazna mapa postoji u radnoj okolini korisnika. |
+
+### UC-06: Preimenovanje mape ili slike
+
+| Element specifikacije | Opis |
+| :--- | :--- |
+| **Primarni akter** | Registrirani korisnik |
+| **Povezani zahtjevi** | F-002 |
+| **Preduvjeti** | Korisnik je prijavljen i mapa ili slika postoji u njegovoj radnoj okolini. |
+| **Glavni uspješni tok** | 1. Korisnik odabere mapu ili sliku i radnju preimenovanja.<br>2. Korisnik unese novi naziv.<br>3. Sustav provjeri naziv i spremi promjenu.<br>4. Sustav prikaže novi naziv. |
+| **Alternativni tokovi / Iznimke** | **3a — Naziv je prazan ili nevaljan:** sustav prikaže poruku, naziv ostaje stari.<br>**3b — Naziv već postoji na toj razini:** sustav prikaže poruku i traži drugi naziv.<br>**3c — Spremanje nije uspjelo:** sustav prikaže poruku, naziv ostaje stari. |
+| **Posljedice (ishod)** | Stavka ima novi naziv. Njezin sadržaj i položaj nisu promijenjeni. |
+
+### UC-07: Premještanje mape ili slike
+
+| Element specifikacije | Opis |
+| :--- | :--- |
+| **Primarni akter** | Registrirani korisnik |
+| **Povezani zahtjevi** | F-002 |
+| **Preduvjeti** | Korisnik je prijavljen i stavka postoji u njegovoj radnoj okolini. |
+| **Glavni uspješni tok** | 1. Korisnik odabere stavku i povuče je u drugu mapu ili odabere radnju "Premjesti u...".<br>2. Korisnik odabere odredišnu mapu.<br>3. Sustav provjeri premještanje i promijeni položaj stavke.<br>4. Sustav prikaže stavku u odredišnoj mapi. |
+| **Alternativni tokovi / Iznimke** | **3a — Mapa se pokušava premjestiti u samu sebe ili u vlastitu podmapu:** sustav odbije premještanje uz poruku.<br>**3b — U odredišnoj mapi već postoji stavka s istim nazivom:** sustav odbije premještanje uz poruku.<br>**3c — Spremanje nije uspjelo:** sustav prikaže poruku, stavka ostaje na starom mjestu. |
+| **Posljedice (ishod)** | Stavka (s cijelim sadržajem ako je mapa) nalazi se u odredišnoj mapi. |
+
+### UC-08: Brisanje mape ili slike
+
+| Element specifikacije | Opis |
+| :--- | :--- |
+| **Primarni akter** | Registrirani korisnik |
+| **Povezani zahtjevi** | F-002 |
+| **Preduvjeti** | Korisnik je prijavljen i stavka postoji u njegovoj radnoj okolini. |
+| **Glavni uspješni tok** | 1. Korisnik odabere stavku i radnju brisanja.<br>2. Sustav zatraži potvrdu; za mapu navede broj stavki koje će biti obrisane.<br>3. Korisnik potvrdi.<br>4. Sustav obriše stavku, a za mapu i sav njezin sadržaj.<br>5. Sustav ukloni stavku iz prikaza. |
+| **Alternativni tokovi / Iznimke** | **3a — Korisnik odustane:** ništa se ne briše.<br>**4a — Brisanje nije uspjelo:** sustav prikaže poruku, stavka ostaje. |
+| **Posljedice (ishod)** | Stavka i njezin sadržaj više ne postoje u radnoj okolini korisnika. |
+
+### UC-09: Prikaz slike
+
+| Element specifikacije | Opis |
+| :--- | :--- |
+| **Primarni akter** | Registrirani korisnik |
+| **Povezani zahtjevi** | F-003 |
+| **Preduvjeti** | Korisnik je prijavljen i slika postoji u njegovoj radnoj okolini. |
+| **Glavni uspješni tok** | 1. Korisnik odabere sliku.<br>2. Sustav prikaže sliku u pregledniku slika zajedno s osnovnim podacima (naziv, format, dimenzije, veličina).<br>3. Korisnik po potrebi povećava i pomiče sliku ili prelazi u uređivanje (UC-10). |
+| **Alternativni tokovi / Iznimke** | **2a — Preglednik ne može prikazati izvorni format (npr. TIFF):** sustav prikaže pretvoreni pregled i obavijesti korisnika.<br>**2b — Slika se ne može učitati:** sustav prikaže poruku i mogućnost ponovnog pokušaja. |
+| **Posljedice (ishod)** | Nema promjene podataka. |
+
+### UC-10: Obrada slike
+
+| Element specifikacije | Opis |
+| :--- | :--- |
+| **Primarni akter** | Registrirani korisnik |
+| **Povezani zahtjevi** | F-003, F-003.1, F-003.2, F-003.3, F-003.4 |
+| **Preduvjeti** | Korisnik je prijavljen i otvorio je sliku u uređivaču. |
+| **Glavni uspješni tok** | 1. Korisnik odabere vrstu obrade: filtar, morfološki operator, geometrijsku transformaciju ili segmentaciju.<br>2. Korisnik po potrebi postavi parametre operacije.<br>3. Sustav primijeni operaciju i prikaže rezultat.<br>4. Korisnik ponavlja korake 1 do 3 ili poništava promjene. |
+| **Alternativni tokovi / Iznimke** | **2a — Parametri su nevaljani:** sustav prikaže poruku i ne primjenjuje operaciju.<br>**3a — Operacija nije uspjela (npr. slika je prevelika):** sustav prikaže poruku, slika ostaje kakva je bila prije operacije. |
+| **Posljedice (ishod)** | Prikazana slika sadrži primijenjene operacije. Izvorna datoteka se ne mijenja dok korisnik ne spremi (UC-11). |
+
+### UC-11: Spremanje obrađene slike
+
+| Element specifikacije | Opis |
+| :--- | :--- |
+| **Primarni akter** | Registrirani korisnik |
+| **Povezani zahtjevi** | F-003, F-002 |
+| **Preduvjeti** | Korisnik je obradio sliku u uređivaču (UC-10). |
+| **Glavni uspješni tok** | 1. Korisnik odabere spremanje.<br>2. Korisnik odabere hoće li rezultat spremiti kao novu datoteku ili prepisati izvornu.<br>3. Za novu datoteku korisnik unese naziv i odabere mapu; za prepisivanje sustav traži potvrdu.<br>4. Sustav pohrani sliku i prikaže potvrdu. |
+| **Alternativni tokovi / Iznimke** | **3a — Naziv nevaljan ili već postoji u odabranoj mapi:** sustav prikaže poruku i traži drugi naziv.<br>**3b — Korisnik odustane od prepisivanja:** izvorna datoteka ostaje nepromijenjena.<br>**4a — Pohrana nije uspjela:** sustav prikaže poruku, izvorna slika ostaje nepromijenjena, a obrađeni rezultat ostaje u uređivaču. |
+| **Posljedice (ishod)** | Obrađena slika postoji kao nova datoteka ili je zamijenila izvornu. |
+
 
 ### UC-12: Uređivanje javnog profila
 
