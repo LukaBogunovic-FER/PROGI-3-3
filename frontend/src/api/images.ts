@@ -1,3 +1,4 @@
+import { apiFetch } from './http'
 // Uploads an image to the backend and returns its generated filename
 export async function uploadImage(file: Blob): Promise<string> {
 
@@ -6,7 +7,7 @@ export async function uploadImage(file: Blob): Promise<string> {
     formData.append('file', file, 'edited-image.png')
 
     // Send the image to the backend
-    const response = await fetch('/api/images', {
+    const response = await apiFetch('/api/images', {
         method: 'POST',
         body: formData,
     })
@@ -23,7 +24,7 @@ export async function uploadImage(file: Blob): Promise<string> {
 // Fetch filenames of all stored images.
 export async function getAllImages(): Promise<string[]> {
     
-  const response = await fetch("/api/images");
+  const response = await apiFetch("/api/images");
 
   if (!response.ok) {
     throw new Error("Failed to fetch images");

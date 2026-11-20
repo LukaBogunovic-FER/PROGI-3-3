@@ -1,6 +1,9 @@
 import { http, HttpResponse } from 'msw'
 
+
+
 export const handlers = [
+  
   http.get('/api/me', () => {
     return HttpResponse.json({
       id: 1,
@@ -8,4 +11,6 @@ export const handlers = [
       email: 'test@example.com',
     })
   }),
+  
+  //http.get('/api/me', () => new HttpResponse(null, { status: 401 }))
 ]
