@@ -1,0 +1,65 @@
+@startuml
+hide circle
+skinparam linetype ortho
+
+entity users {
+  *id : bigint <<PK>>
+  --
+  *oauth_subject : varchar <<unique>>
+  *name : varchar
+  *email : varchar
+  avatar_url : varchar
+  bio : varchar
+}
+
+entity folders {
+  *id : bigint <<PK>>
+  --
+  *owner_id : bigint <<FK>>
+  parent_id : bigint <<FK>>
+  *name : varchar
+}
+
+entity images {
+  *id : bigint <<PK>>
+  --
+  *owner_id : bigint <<FK>>
+  *folder_id : bigint <<FK>>
+  *name : varchar
+  *format : varchar
+  *size_bytes : bigint
+  *storage_filename : varchar
+  *created_at : timestamp
+}
+
+entity posts {
+  *id : bigint <<PK>>
+  --
+  *author_id : bigint <<FK>>
+  *image_id : bigint <<FK>>
+  *description : varchar
+  *is_public : boolean
+  *created_at : timestamp
+}
+
+entity favorite_posts {
+  *user_id : bigint <<FK>>
+  *post_id : bigint <<FK>>
+}
+
+entity favorite_profiles {
+  *user_id : bigint <<FK>>
+  *profile_user_id : bigint <<FK>>
+}
+
+users ||--o{ folders : "posjeduje"
+folders |o--o{ folders : "sadrži"
+folders ||--o{ images : "sadrži"
+users ||--o{ images : "posjeduje"
+users ||--o{ posts : "objavljuje"
+images ||--o{ posts : "prikazana u"
+users ||--o{ favorite_posts : "sprema"
+posts ||--o{ favorite_posts : "u favoritima"
+users ||--o{ favorite_profiles : "prati"
+users ||--o{ favorite_profiles : "je favorit"
+@enduml
