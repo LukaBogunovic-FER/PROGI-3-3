@@ -1,0 +1,53 @@
+@startuml
+left to right direction
+
+actor "Registrirani korisnik" as K
+actor "Pružatelj identiteta\n(OAuth 2.0)" as IdP
+
+rectangle "Pictora" {
+  usecase "UC-01\nPrijava putem OAuth 2.0" as UC1
+
+  rectangle "Radna okolina" {
+    usecase "UC-02\nPregled radne okoline" as UC2
+    usecase "UC-03\nUvoz slike" as UC3
+    usecase "UC-04\nPreuzimanje slike" as UC4
+    usecase "UC-05\nStvaranje mape" as UC5
+    usecase "UC-06\nPreimenovanje" as UC6
+    usecase "UC-07\nPremještanje" as UC7
+    usecase "UC-08\nBrisanje" as UC8
+    usecase "UC-09\nPrikaz slike" as UC9
+    usecase "UC-10\nObrada slike" as UC10
+    usecase "UC-11\nSpremanje obrađene slike" as UC11
+  }
+
+  rectangle "Društveni dio" {
+    usecase "UC-12\nUređivanje javnog profila" as UC12
+    usecase "UC-13\nObjava slike i odabir vidljivosti" as UC13
+    usecase "UC-14\nUređivanje i brisanje objave" as UC14
+    usecase "UC-15\nPregled javnih stranica i objava" as UC15
+    usecase "UC-16\nUpravljanje favoritima" as UC16
+    usecase "UC-17\nPreuzimanje ili kopiranje javne slike" as UC17
+  }
+}
+
+K --> UC1
+K --> UC2
+K --> UC3
+K --> UC4
+K --> UC5
+K --> UC6
+K --> UC7
+K --> UC8
+K --> UC9
+K --> UC10
+K --> UC12
+K --> UC13
+K --> UC14
+K --> UC15
+
+UC11 .> UC10 : <<extend>>
+UC16 .> UC15 : <<extend>>
+UC17 .> UC15 : <<extend>>
+
+UC1 -- IdP
+@enduml
